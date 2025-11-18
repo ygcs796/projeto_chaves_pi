@@ -1,10 +1,11 @@
-#include "raylib.h"
 #include <stdio.h>
+#include "raylib.h"
+#include "./arquivos_h/estadojogo.h"
 
 int rodarMenu(int larguraJanela, int alturaJanela) {
 
     int opcao_selecionada = 1; // A opção que já vai vir selecionada vai ser o START
-    int tela_do_jogo = 0; // configuração para dizer que estamos no MENU
+    EstadoJogo tela_do_jogo = MENU; // configuração para dizer que estamos no MENU
     int quero_sair_do_menu = 0;
 
     Image telaFundo = LoadImage("imagens/telaFundo.png");
@@ -69,13 +70,13 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
             if (opcao_selecionada == 0)
             {
                 /* code */
-                tela_do_jogo = 1;
+                tela_do_jogo = CREDITOS;
                 quero_sair_do_menu = 1;
 
             } else if (opcao_selecionada == 1)
             {
                 /* code */
-                tela_do_jogo = 2;
+                tela_do_jogo = GAMEPLAY;
                 quero_sair_do_menu = 1;
 
             }
@@ -92,6 +93,7 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
             DrawTexture(botaoCreditosTex, 725, 700, WHITE);
             DrawTexture(botaoStartTex, 750, 850, WHITE);
 
+            // printando a chave seletora de acordo com a posição dela
             if (opcao_selecionada == 0)
             {
                 alturaChave = 725;
@@ -106,7 +108,7 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
     }
 
     if (!(quero_sair_do_menu))
-    {
+    { 
         /* code */
         UnloadImage(telaFundo);
         UnloadImage(titulo);

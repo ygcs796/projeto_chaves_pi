@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "menu.h"
 #include "creditos.h"
+#include "./arquivos_h/estadojogo.h"
 
 int main(void) {
 
@@ -11,23 +12,23 @@ int main(void) {
 
     SetTargetFPS(60);
 
-    int tela_atual = 0;
+    EstadoJogo tela_atual = MENU;
 
     InitAudioDevice();
 
     while (!WindowShouldClose())
     {
         
-        if (tela_atual == 0)
+        if (tela_atual == MENU)
         {
             /* code */
             tela_atual = rodarMenu(largura_tela, altura_tela);
 
-        } else if (tela_atual == 1) {
+        } else if (tela_atual == CREDITOS) {
             
             tela_atual = rodar_creditos(largura_tela, altura_tela);
 
-        } else if (tela_atual == 2) {
+        } else if (tela_atual == GAMEPLAY) {
 
             if (IsKeyPressed(KEY_ENTER))
             {

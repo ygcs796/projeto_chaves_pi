@@ -1,8 +1,9 @@
 #include "raylib.h"
+#include "./arquivos_h/estadojogo.h"
 
 int rodar_creditos(int larguraTela, int alturaTela) {
 
-    int tela_atual_jogo = 1; // Isso significa que estamos nos créditos
+    int tela_atual_jogo = CREDITOS; // Isso significa que estamos nos créditos
     int quero_sair_dos_creditos = 0;
 
     // carregando a imagem de fundo
@@ -22,7 +23,7 @@ int rodar_creditos(int larguraTela, int alturaTela) {
         if(IsKeyPressed(KEY_ENTER)) {
 
             quero_sair_dos_creditos = 1;
-            tela_atual_jogo = 0;
+            tela_atual_jogo = MENU;
 
         }
 
@@ -34,6 +35,7 @@ int rodar_creditos(int larguraTela, int alturaTela) {
         EndDrawing();
 
     }
+
     UnloadImage(tela_fundo);
     UnloadMusicStream(musica_creditos);
 

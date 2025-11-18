@@ -3,5 +3,4 @@
 
 int rodarMenu(int larguraJanela, int alturaJanela);
 
-
 #endif
