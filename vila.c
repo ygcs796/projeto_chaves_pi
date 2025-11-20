@@ -10,7 +10,7 @@ Fase_selecionada executar_vila() {
     bool selecionado = false;
 
     Vector2 pos_chaves = {960, 540};
-    float velocidade_chaves = 20.0f;
+    float velocidade_chaves = 6.0f;
 
     Player chaves;
     setarjogador(&chaves, pos_chaves, velocidade_chaves);
@@ -30,13 +30,13 @@ Fase_selecionada executar_vila() {
 
             ClearBackground(RAYWHITE);
 
-            DrawCircleV(chaves.pos, 50, MAROON);     // jogador
+            desenharjogador(&chaves);
             DrawCircle(1200, 560, 50, GREEN);        // porta
-            DrawRectangleLines(chaves.hitbox.x, chaves.hitbox.y, chaves.hitbox.width, chaves.hitbox.height, BLUE);
             DrawRectangleLines(porta_dona_florinda.x, porta_dona_florinda.y, porta_dona_florinda.width, porta_dona_florinda.height, BLUE);
 
         EndDrawing();
     }
+    descarregarjogador(&chaves);
 
     return fase_selecionada;
 }

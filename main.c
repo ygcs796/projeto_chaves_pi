@@ -36,7 +36,8 @@ int main(void) {
             
             tela_atual = rodar_creditos(largura_tela, altura_tela);
 
-        } else if (tela_atual == 2) { // tela de gameplay
+        } 
+        else if (tela_atual == 2) { // tela de gameplay
 
             /*if (IsKeyPressed(KEY_ENTER))
             {
@@ -52,13 +53,6 @@ int main(void) {
                 Executar_fase_1();
             }
             
-    
-            
-            /*BeginDrawing();
-
-                ClearBackground(RAYWHITE);
-
-            EndDrawing();*/
 
         }
 
