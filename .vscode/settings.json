@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "raylib.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stdbool.h": "c",
+        "time.h": "c"
     }
 }

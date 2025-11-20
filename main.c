@@ -8,8 +8,8 @@
 
 int main(void) {
 
-    const int largura_tela = 1920; //GetMonitorWidth(0);  1366;
-    const int altura_tela =  1080; //GetMonitorHeight(0); 768;
+    const int largura_tela = 1920; //1366; 1920; //GetMonitorWidth(0);  
+    const int altura_tela = 1080;  //768; 1080; //GetMonitorHeight(0); 
     InitWindow(largura_tela, altura_tela, "Chaves: em busca da chave perdida"); // abre a janela
 
     Vector2 pos_chaves = {960, 540};
