@@ -2,13 +2,13 @@
 #include "raylib.h"
 
 void atualizarjogador(Player *p) {
-    // Movimento do player
+    // avalia o movimento do jogador
     if (IsKeyDown(KEY_RIGHT)) p->pos.x += p->velocidade;
     if (IsKeyDown(KEY_LEFT))  p->pos.x -= p->velocidade;
     if (IsKeyDown(KEY_UP))    p->pos.y -= p->velocidade;
     if (IsKeyDown(KEY_DOWN))  p->pos.y += p->velocidade;
 
-    // Atualizar hitbox baseado no centro
+    // atualiza a hitbox(centralizada)
     p->hitbox.x = p->pos.x - p->hitbox.width / 2;
     p->hitbox.y = p->pos.y - p->hitbox.height / 2;
 }
