@@ -7,6 +7,10 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
     int tela_do_jogo = 0; // configuração para dizer que estamos no MENU
     int quero_sair_do_menu = 0;
 
+    // Sfx == Sound Effect
+    Sound sfx_selecao = LoadSound("./efeitos_sonoros/som_selecao_opcoes_menu_8bit.wav");
+    SetSoundVolume(sfx_selecao, 0.10);
+
     Image telaFundo = LoadImage("imagens/telaFundo.png");
     Image titulo = LoadImage("imagens/titulo.png");
     Image subtitulo = LoadImage("imagens/subtitulo.png");
@@ -50,11 +54,11 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
                 opcao_selecionada = 1;
 
             }
-            
+            PlaySound(sfx_selecao);
 
         } else if (IsKeyPressed(KEY_DOWN))
         {
-            
+
             opcao_selecionada++;
 
             if (opcao_selecionada > 1)
@@ -63,6 +67,8 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
                 opcao_selecionada = 0;
 
             }
+            
+            PlaySound(sfx_selecao);
             
         } else if (IsKeyPressed(KEY_ENTER))
         {
@@ -104,20 +110,23 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
         
         EndDrawing();
     }
+    UnloadSound(sfx_selecao);
 
+    UnloadImage(telaFundo);
+    UnloadImage(titulo);
+    UnloadImage(subtitulo);
+    UnloadImage(chaves);
+    UnloadImage(botaoCreditos);
+    UnloadImage(botaoStart);
+    UnloadImage(chaveSeletora);
+
+    UnloadMusicStream(musicaMenu);
+    
     if (!(quero_sair_do_menu))
     {
         /* code */
-        UnloadImage(telaFundo);
-        UnloadImage(titulo);
-        UnloadImage(subtitulo);
-        UnloadImage(chaves);
-        UnloadImage(botaoCreditos);
-        UnloadImage(botaoStart);
-        UnloadImage(chaveSeletora);
 
-        UnloadMusicStream(musicaMenu);
-        
+
         CloseWindow();
 
     }
