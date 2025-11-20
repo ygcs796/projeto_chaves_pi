@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "creditos.h"
 #include "player.h"
+#include "vila.h"
 
 int main(void) {
 
@@ -43,24 +44,15 @@ int main(void) {
 
             }
 
-            atualizarjogador(&chaves); // atualiza os dados do chaves
-            Rectangle porta_florinda = { 1150, 510, 100, 100}; // hitbox da porta da dona florinda
+            int porta_selecionada = executar_vila(); // executa a  vila
+            printf("porta selecionada: %d", porta_selecionada);
     
             
-            BeginDrawing();
+            /*BeginDrawing();
 
                 ClearBackground(RAYWHITE);
-                
-                // -------------------primeiro ambiente
-                DrawCircleV(chaves.pos, 50, MAROON); // desenha o personagem chaves
-                DrawCircle(1200, 560, 50, GREEN); // desenha a porta da dona florinda
-                DrawRectangleLines(chaves.hitbox.x, chaves.hitbox.y, chaves.hitbox.width, chaves.hitbox.height, BLUE); // desenha a hitbox do chaves
-                DrawRectangleLines(1150, 510, 100, 100, BLUE); // desenha a hitbox da dona florinda
-                if(CheckCollisionRecs(porta_florinda, chaves.hitbox))
-                    DrawText("Colidiu", 1000, 560, 30, BLACK); // aviso de colisao
-                // --------------------------------
 
-            EndDrawing();
+            EndDrawing();*/
 
         }
 
