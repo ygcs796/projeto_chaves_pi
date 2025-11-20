@@ -4,9 +4,9 @@
 #include "vila.h"
 #include "player.h"
 
-Acao_tomada executar_vila() {
+Fase_selecionada executar_vila() {
 
-    Acao_tomada acao_tomada = erro; // coloca como erro para caso nada seja selecionado
+    Fase_selecionada fase_selecionada = erro; // coloca como erro para caso nada seja selecionado
     bool selecionado = false;
 
     Vector2 pos_chaves = {960, 540};
@@ -22,7 +22,7 @@ Acao_tomada executar_vila() {
         Rectangle porta_dona_florinda = { 1150, 510, 100, 100 }; // seta a colisao da porta da dona florinda
 
         if (CheckCollisionRecs(porta_dona_florinda, chaves.hitbox)) { // verifica se a colisao com a porta da dona florinda ocorreu
-            acao_tomada = porta_florinda;
+            fase_selecionada = porta_florinda;
             selecionado = true;
         }
 
@@ -38,5 +38,5 @@ Acao_tomada executar_vila() {
         EndDrawing();
     }
 
-    return acao_tomada;
+    return fase_selecionada;
 }
