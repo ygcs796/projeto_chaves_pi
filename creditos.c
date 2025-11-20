@@ -5,6 +5,10 @@ int rodar_creditos(int larguraTela, int alturaTela) {
     int tela_atual_jogo = 1; // Isso significa que estamos nos créditos
     int quero_sair_dos_creditos = 0;
 
+    // sfx = Sound Effect
+    Sound sfx_enter = LoadSound("./efeitos_sonoros/som_selecao_opcoes_menu_8bit.wav");
+    SetSoundVolume(sfx_enter, 0.10);
+
     // carregando a imagem de fundo
     Image tela_fundo = LoadImage("imagens/imagem_creditos.png");
     ImageResize(&tela_fundo, larguraTela, alturaTela);
@@ -24,6 +28,7 @@ int rodar_creditos(int larguraTela, int alturaTela) {
             quero_sair_dos_creditos = 1;
             tela_atual_jogo = 0;
 
+            PlaySound(sfx_enter);
         }
 
         BeginDrawing();
@@ -34,6 +39,11 @@ int rodar_creditos(int larguraTela, int alturaTela) {
         EndDrawing();
 
     }
+
+    // fazendo esse loop para o programa só dar free quando o efeito sonoro acabar
+    while (IsSoundPlaying(sfx_enter)){}
+    UnloadSound(sfx_enter);
+
     UnloadImage(tela_fundo);
     UnloadMusicStream(musica_creditos);
 

@@ -12,7 +12,7 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
     SetSoundVolume(sfx_selecao, 0.10);
 
     Sound sfx_start = LoadSound("./efeitos_sonoros/som_start_8bit.wav");
-    //SetSoundVolume(sfx_start, 0.20);
+    SetSoundVolume(sfx_start, 0.40);
 
     Image telaFundo = LoadImage("imagens/telaFundo.png");
     Image titulo = LoadImage("imagens/titulo.png");
@@ -81,6 +81,8 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
                 tela_do_jogo = 1;
                 quero_sair_do_menu = 1;
 
+                PlaySound(sfx_selecao);
+
             } else if (opcao_selecionada == 1)
             {
                 /* code */
@@ -125,9 +127,11 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
     
     UnloadMusicStream(musicaMenu);
     
+    // Loops para esperar o som terminar para eu dar free nele
+    while(IsSoundPlaying(sfx_selecao)) {}
     UnloadSound(sfx_selecao);
-    while (IsSoundPlaying(sfx_start)) {}
     
+    while (IsSoundPlaying(sfx_start)) {}
     UnloadSound(sfx_start);
 
     if (!(quero_sair_do_menu))
