@@ -25,8 +25,10 @@ void Executar_fase_1() {
     bool ganhou = false; // tenho que tirar isso depois
     int vidas = 3;
     bool primeiro_loop = true;
+    int dinheiro = 0;
+    bool venceu_jogo = false;
 
-    while (!WindowShouldClose() && vidas > 0) {
+    while (!WindowShouldClose() && vidas > 0 && !venceu_jogo) {
 
         Vector2 mouse = GetMousePosition();
         
@@ -47,29 +49,19 @@ void Executar_fase_1() {
 
             else if (CheckCollisionPointRec(mouse, botao_cebola))
                 ingredientes[Cebola] = !ingredientes[Cebola];
-
-            /*else if (CheckCollisionPointRec(mouse, botao_de_selecao)){
-                gerar_config_de_igredientes(ingredientes_temp); // muda a config caso o botao de selcao seja apertado
-                tempo_base_cronometro = GetTime(); // muda o tempo base do cronometro
-            }*/
         }
 
-        if(((int)cronometro == 0 || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, botao_de_selecao))) && !primeiro_loop){ // condicoes de encerramento
+        if((cronometro < 0.1f || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, botao_de_selecao))) && !primeiro_loop){ // condicoes de encerramento
             ganhou = verificar_vitória(ingredientes, ingredientes_temp);
 
                 if(ganhou){ // se ganhou a rodada
-
+                    dinheiro += retornar_dinheiro_rodada(ingredientes);
                 }else{ // se perdeu
                     printf("perdeu vida");
                     vidas--;
                 }
             gerar_config_de_igredientes(ingredientes_temp); // muda a config caso o tempo acabe
             tempo_base_cronometro = GetTime(); // muda o tempo base do cronometro(zera)
-
-            for(int i = 0; i < numero_de_ingredientes; i++){
-                printf("[%d %d]\n", ingredientes[i], ingredientes_temp[i]);
-            }
-            printf("%d\n", ganhou);
 
         }
 
@@ -83,13 +75,17 @@ void Executar_fase_1() {
             DrawRectangleRec(botao_frango, BLACK);
             DrawRectangleRec(botao_cebola, LIGHTGRAY);
             DrawRectangleRec(botao_de_selecao, GREEN);
-            
+
             printar_mensagens(ingredientes);
             cronometro = desenhar_e_retornar_cronometro(tempo_base_cronometro);
+            desenhar_dinheiro_e_vida(dinheiro, vidas);
 
             desenhar_conf_ingredientes(ingredientes_temp);
 
         EndDrawing();
+
+        if (dinheiro >= 200)
+            venceu_jogo = true;
 
         primeiro_loop = false; // encerra a imunidade de tirar vida 
     }
@@ -103,10 +99,18 @@ int gerar_bool_aleatorio(){
 void gerar_config_de_igredientes(bool ingredientes_temp[]){
 
     printf("\n --------------- Valor Alterado ---------------- \n");
+    int qtd_igredientes = 0;
+    bool temp;
 
     for(int i =  0; i < numero_de_ingredientes; i++){
-        ingredientes_temp[i] = gerar_bool_aleatorio(); // retorna aleatoriamente se inclui ou nao o igrediente
+        temp = gerar_bool_aleatorio();
+        ingredientes_temp[i] = temp; // retorna aleatoriamente se inclui ou nao o igrediente
+        if(temp)
+        qtd_igredientes++;
     }
+
+    if (qtd_igredientes < 2)
+        gerar_config_de_igredientes(ingredientes_temp); //  recursao no caso de ter menos de 2 ingredientes
 }
 
 void printar_mensagens(bool ingredientes[]){
@@ -165,5 +169,23 @@ bool verificar_vitória(bool ingredientes[], bool ingredientes_temp[]){
     }
 
     return vitoria;
+}
+
+int retornar_dinheiro_rodada(bool ingredientes[]){
+    int dinheiro_final = 0;
+
+    for(int i = 0; i < numero_de_ingredientes; i++)
+        dinheiro_final += ingredientes[i] * 10; // da 10 dinheiros para cada ingrediente
+
+    return dinheiro_final;
+}
+
+void desenhar_dinheiro_e_vida(int dinheiro, int vida){
+    char texto[5];
+    sprintf(texto, "%d", dinheiro);
+    DrawText(texto, 1200, 50, 20, BLACK);
+
+    sprintf(texto, "%d", vida);
+    DrawText(texto, 1100, 50, 20, BLACK);
 }
 

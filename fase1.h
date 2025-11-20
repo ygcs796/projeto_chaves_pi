@@ -22,5 +22,7 @@ void printar_mensagens(bool ingredientes[]);
 void desenhar_conf_ingredientes(bool ingredientes_temp[]);
 float desenhar_e_retornar_cronometro(float tempo_base_cronometro);
 bool verificar_vitória(bool ingredientes[], bool ingredientes_temp[]);
+int retornar_dinheiro_rodada(bool ingredientes[]);
+void desenhar_dinheiro_e_vida(int dinheiro, int vida);
 
 #endif
