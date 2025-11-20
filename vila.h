@@ -10,9 +10,9 @@ typedef enum {
     porta_florinda,
     porta_2,
     porta_3
-} Acao_tomada;
+} Fase_selecionada;
 
 // Executa a lógica da vila e retorna a ação escolhida
-Acao_tomada executar_vila(void);
+Fase_selecionada executar_vila();
 
 #endif

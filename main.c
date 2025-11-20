@@ -4,11 +4,12 @@
 #include "creditos.h"
 #include "player.h"
 #include "vila.h"
+#include "fase1.h"
 
 int main(void) {
 
-    const int largura_tela = 1920; 
-    const int altura_tela = 1080;
+    const int largura_tela = 1920; //GetMonitorWidth(0);  1366;
+    const int altura_tela =  1080; //GetMonitorHeight(0); 768;
     InitWindow(largura_tela, altura_tela, "Chaves: em busca da chave perdida"); // abre a janela
 
     Vector2 pos_chaves = {960, 540};
@@ -37,15 +38,20 @@ int main(void) {
 
         } else if (tela_atual == 2) { // tela de gameplay
 
-            if (IsKeyPressed(KEY_ENTER))
+            /*if (IsKeyPressed(KEY_ENTER))
             {
-                /* code */
+                 code
                 tela_atual = 0;
 
-            }
+            }*/
 
-            int porta_selecionada = executar_vila(); // executa a  vila
-            printf("porta selecionada: %d", porta_selecionada);
+            Fase_selecionada fase_selecionada = executar_vila(); // executa a  vila e retorna um enum Fase_selcionada do arquivo vila.h
+            printf("porta selecionada: %d", fase_selecionada);
+
+            if (fase_selecionada == porta_florinda){
+                Executar_fase_1();
+            }
+            
     
             
             /*BeginDrawing();
