@@ -1,0 +1,31 @@
+# Compilação C
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+*.obj
+*.lib
+
+# Binários do Raylib
+libraylib.a
+raylib.lib
+raylib.dll
+
+# Executáveis do projeto
+chaves
+chaves.exe
+
+# Build temporários
+build/
+bin/
+dist/
+
+# macOS lixo
+.DS_Store
+
+# Windows lixo
+Thumbs.db
+
