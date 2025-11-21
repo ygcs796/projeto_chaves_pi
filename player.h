@@ -27,9 +27,7 @@ typedef struct {
     Texture2D texSprites;
     int larguraFrame; // largura de 1 único quadro dos sprites do Chaves
     int alturaFrame; // altura de 1 único quadro dos sprites do Chaves
-    int direcao;
-    int contadorFrame;
-    int velocidadeFrame;
+    int direcao; 
     int frameAtual;
 
     int pernaParaAndar; // variável para animação

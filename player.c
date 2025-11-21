@@ -95,8 +95,6 @@ void setarjogador(Player *p, Vector2 pos, float velocidade) {
 
     // Configuração da animação
     p->direcao = BAIXO;
-    p->contadorFrame = 0;
-    p->velocidadeFrame = velocidade; 
     p->frameAtual = 0; // frame inicial/base (Chaves parado)
     p->pernaParaAndar = 1;
 
