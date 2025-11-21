@@ -14,7 +14,7 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
     Sound sfx_start = LoadSound("./efeitos_sonoros/som_start_8bit.wav");
     SetSoundVolume(sfx_start, 0.40);
 
-    Image telaFundo = LoadImage("./imagens/telafundo.png");
+    Image telaFundo = LoadImage("./imagens/telaFundo.png");
     Image titulo = LoadImage("./imagens/titulo.png");
     Image subtitulo = LoadImage("./imagens/subtitulo.png");
     Image chaves = LoadImage("./imagens/chaves.png");
