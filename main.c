@@ -8,16 +8,12 @@
 
 int main(void) {
 
-    const int largura_tela = 1920; //GetMonitorWidth(0);  1366;
-    const int altura_tela =  1080; //GetMonitorHeight(0); 768;
+    const int largura_tela = GetMonitorWidth(0); //GetMonitorWidth(0);  1366;
+    const int altura_tela = GetMonitorHeight(0); //GetMonitorHeight(0); 768;
     InitWindow(largura_tela, altura_tela, "Chaves: em busca da chave perdida"); // abre a janela
 
-    Vector2 pos_chaves = {960, 540};
-    float velocidade_chaves = 20.0f;
-
-    Player chaves;
-    setarjogador(&chaves, pos_chaves, velocidade_chaves);
-
+    ToggleFullscreen();
+    
     SetTargetFPS(60);
 
     int tela_atual = 0;

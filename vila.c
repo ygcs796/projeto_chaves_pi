@@ -10,7 +10,7 @@ Fase_selecionada executar_vila() {
     bool selecionado = false;
 
     Vector2 pos_chaves = {960, 540};
-    float velocidade_chaves = 6.0f;
+    float velocidade_chaves = 1.0f;
 
     Player chaves;
     setarjogador(&chaves, pos_chaves, velocidade_chaves);

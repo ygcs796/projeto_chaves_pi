@@ -1,51 +1,80 @@
 #include "player.h"
 #include "raylib.h"
+#include "raymath.h"
 
 void atualizarjogador(Player *p) {
-    bool JogadorSeMovendo = false;
+    if (p->isMoving)
+    { // condição que não aceita entradas do teclado enquanto a movimentação de 1 bloco não acabar
+        /* code */
+        p->moveTimer += GetFrameTime();
 
-    // avalia o movimento do jogador
-    if (IsKeyDown(KEY_RIGHT)) {
-        p->pos.x += p->velocidade;
-        p->direcao = DIREITA;
-        JogadorSeMovendo = true;
-    }
-    if (IsKeyDown(KEY_LEFT)){
-        p->pos.x -= p->velocidade;
-        p->direcao = ESQUERDA;
-        JogadorSeMovendo = true;
-    }
-    if (IsKeyDown(KEY_UP)){
-        p->pos.y -= p->velocidade;
-        p->direcao = CIMA;
-        JogadorSeMovendo = true;    
-    }
-    if (IsKeyDown(KEY_DOWN)){
-        p->pos.y += p->velocidade;
-        p->direcao = BAIXO;
-        JogadorSeMovendo = true;
-    }
+        float progress = p->moveTimer / p->moveTime;
+        if (progress > 1.0f) progress = 1.0f;
 
-    // LÓGICA DE ANIMAÇÃO
-    if (JogadorSeMovendo) {
+        p->pos = Vector2Lerp(p->startPos, p->targetPos, progress);
 
-        p->contadorFrame++;
+        // SINCRONIZAÇÃO DA ANIMAÇÃO COM O MOVIMENTO
+        if (progress < (1.0f / 2.0f))
+        {
+            /* code */
+            // verificação para variar as pernas a cada andada do Chaves
+            if (p->pernaParaAndar == 1)
+            {
+                /* code */
+                p->frameAtual = 1;
 
-        // lógica da mudança de quadros ao longo do tempo
-        if (p->contadorFrame >= (60 / p->velocidadeFrame)) {
+            } else {
 
-            p->contadorFrame = 0;
-            p->frameAtual++;
+                p->frameAtual = 3;
+
+            }
+        } else if (progress < 1.0f){
+
+            p->frameAtual = 0; // Chaves parado;
+
+        } else if (progress == 1.0f) { // quando o Chaves tiver acabado o movimento de 1 bloco para uma direção definida
+            p->pos = p->targetPos;
+            p->isMoving = false;
+            p->moveTimer = 0.0f;
+
+
+            // decidi a próxima perna (sprite) do movimento do Chaves
+            if (p->pernaParaAndar == 1)
+            {
+                /* code */
+                p->pernaParaAndar = 2;
+
+            } else {
+
+                p->pernaParaAndar = 1;
+
+            }
             
-            // lógica circular da mudança de frames
-            if (p->frameAtual > 3) p->frameAtual = 0;
 
+        } 
+
+    } else {
+
+        p->startPos = p->pos;
+
+        // avalia o movimento do jogador e define a direção dele
+        if (IsKeyDown(KEY_RIGHT)) {
+            p->targetPos.x = p->pos.x + p->tileSize;
+            p->direcao = DIREITA;
+            p->isMoving = true;
+        } else if (IsKeyDown(KEY_LEFT)){
+            p->targetPos.x = p->pos.x - p->tileSize;
+            p->direcao = ESQUERDA;
+            p->isMoving = true;
+        } else if (IsKeyDown(KEY_UP)){
+            p->targetPos.y = p->pos.y - p->tileSize;
+            p->direcao = CIMA;
+            p->isMoving = true;    
+        } else if (IsKeyDown(KEY_DOWN)){
+            p->targetPos.y = p->pos.y + p->tileSize;
+            p->direcao = BAIXO;
+            p->isMoving = true;
         }
-
-    } else { // se o jogador estiver parado
-
-        p->frameAtual = 0;
-        p->contadorFrame = 0;
 
     }
 
@@ -62,13 +91,14 @@ void setarjogador(Player *p, Vector2 pos, float velocidade) {
     p->imagemSprites = LoadImage("imagens/chavinho_movimentacao.png");
     p->texSprites = LoadTextureFromImage(p->imagemSprites);
     p->larguraFrame = 160;
-    p->alturaFrame = 240;
+    p->alturaFrame = 200;
 
     // Configuração da animação
     p->direcao = BAIXO;
     p->contadorFrame = 0;
-    p->velocidadeFrame = velocidade * 2; 
+    p->velocidadeFrame = velocidade; 
     p->frameAtual = 0; // frame inicial/base (Chaves parado)
+    p->pernaParaAndar = 1;
 
     // Define o tamanho da hitbox
     p->hitbox.width = (float) p->larguraFrame;
@@ -77,6 +107,13 @@ void setarjogador(Player *p, Vector2 pos, float velocidade) {
     // Ajusta hitbox ao centro do player
     p->hitbox.x = pos.x - p->hitbox.width / 2;
     p->hitbox.y = pos.y - p->hitbox.height / 2;
+
+    // INICIALIZAÇÃO DO MOVIMENTO POR BLOCOS
+    p->isMoving = false;
+    p->targetPos = pos;
+    p->moveTimer = 0.0f;
+    p->moveTime = 0.5f;
+    p->tileSize = p->larguraFrame; 
 }
 
 void desenharjogador(Player *p) {
@@ -103,7 +140,7 @@ void desenharjogador(Player *p) {
     DrawTexturePro(p->texSprites, FonteRec, destinoRec, origem, 0.0f, WHITE);
 
     // desenhando a hitbox para debugar
-    DrawRectangleLinesEx(p->hitbox, 1, RED);
+    // DrawRectangleLinesEx(p->hitbox, 1, RED);
 
 }
 

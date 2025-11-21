@@ -14,13 +14,13 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
     Sound sfx_start = LoadSound("./efeitos_sonoros/som_start_8bit.wav");
     SetSoundVolume(sfx_start, 0.40);
 
-    Image telaFundo = LoadImage("imagens/telaFundo.png");
-    Image titulo = LoadImage("imagens/titulo.png");
-    Image subtitulo = LoadImage("imagens/subtitulo.png");
-    Image chaves = LoadImage("imagens/chaves.png");
-    Image botaoCreditos = LoadImage("imagens/botaoCreditos.png");
-    Image botaoStart = LoadImage("imagens/botaoStart.png");
-    Image chaveSeletora = LoadImage("imagens/chaveSeletora.png");
+    Image telaFundo = LoadImage("./imagens/telafundo.png");
+    Image titulo = LoadImage("./imagens/titulo.png");
+    Image subtitulo = LoadImage("./imagens/subtitulo.png");
+    Image chaves = LoadImage("./imagens/chaves.png");
+    Image botaoCreditos = LoadImage("./imagens/botaoCreditos.png");
+    Image botaoStart = LoadImage("./imagens/botaoStart.png");
+    Image chaveSeletora = LoadImage("./imagens/chaveSeletora.png");
 
     ImageResize(&telaFundo, larguraJanela, alturaJanela);
     ImageResize(&titulo, 600, 300);
@@ -40,7 +40,7 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
     int alturaChave = 725;
 
 
-    Music musicaMenu = LoadMusicStream("musicas/musicaMenu.ogg");
+    Music musicaMenu = LoadMusicStream("./musicas/musicaMenu.ogg");
     PlayMusicStream(musicaMenu);
 
     while (!WindowShouldClose() && !(quero_sair_do_menu))
@@ -97,6 +97,7 @@ int rodarMenu(int larguraJanela, int alturaJanela) {
         BeginDrawing();
         
             ClearBackground(RAYWHITE);
+
             DrawTexture(telaFundoTex, 0, 0, WHITE);
             DrawTexture(tituloTex, 575, 25, WHITE);
             DrawTexture(subtituloTex, 700, 300, WHITE);

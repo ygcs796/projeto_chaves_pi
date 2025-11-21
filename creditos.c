@@ -10,12 +10,12 @@ int rodar_creditos(int larguraTela, int alturaTela) {
     SetSoundVolume(sfx_enter, 0.10);
 
     // carregando a imagem de fundo
-    Image tela_fundo = LoadImage("imagens/imagem_creditos.png");
+    Image tela_fundo = LoadImage("./imagens/imagem_creditos.png");
     ImageResize(&tela_fundo, larguraTela, alturaTela);
     Texture2D tela_fundo_tex = LoadTextureFromImage(tela_fundo);
 
     // carregando a música
-    Music musica_creditos = LoadMusicStream("musicas/musica_creditos.ogg");
+    Music musica_creditos = LoadMusicStream("./musicas/musica_creditos.ogg");
     PlayMusicStream(musica_creditos);
 
     while (!WindowShouldClose() && !(quero_sair_dos_creditos))
