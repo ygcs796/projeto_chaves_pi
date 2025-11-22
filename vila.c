@@ -10,10 +10,9 @@ Fase_selecionada executar_vila() {
     bool selecionado = false;
 
     Vector2 pos_chaves = {960, 540};
-    float velocidade_chaves = 1.0f;
 
     Player chaves;
-    setarjogador(&chaves, pos_chaves, velocidade_chaves);
+    setarjogador(&chaves, pos_chaves);
 
     // carregamento do mapa
     Image imagem_vila = LoadImage("imagens/mapa_vila.png");
