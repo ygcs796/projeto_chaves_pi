@@ -83,9 +83,8 @@ void atualizarjogador(Player *p) {
     p->hitbox.y = p->pos.y - p->hitbox.height / 2;
 }
 
-void setarjogador(Player *p, Vector2 pos, float velocidade) {
+void setarjogador(Player *p, Vector2 pos) {
     p->pos = pos;
-    p->velocidade = velocidade;
 
     // CARREGAMENTO DA IMAGEM DOS SPRITES E CONFIG DAS DIMENSÕES DE 1 ÚNICO FRAME
     p->imagemSprites = LoadImage("imagens/chavinho_movimentacao.png");
@@ -111,7 +110,7 @@ void setarjogador(Player *p, Vector2 pos, float velocidade) {
     p->targetPos = pos;
     p->moveTimer = 0.0f;
     p->moveTime = 0.5f;
-    p->tileSize = p->larguraFrame; 
+    p->tileSize = p->larguraFrame * 0.75; 
 }
 
 void desenharjogador(Player *p) {

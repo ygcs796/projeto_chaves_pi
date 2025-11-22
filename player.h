@@ -11,7 +11,6 @@ typedef enum {
 } DirecaoJogador;
 typedef struct {
     Vector2 pos;
-    float velocidade;
     Rectangle hitbox;
 
     // VARIÁVEIS PARA MOVIMENTO POR BLOCOS NO JOGO
@@ -35,7 +34,7 @@ typedef struct {
 } Player;
 
 void atualizarjogador(Player *p);
-void setarjogador(Player *p, Vector2 pos, float velocidade);
+void setarjogador(Player *p, Vector2 pos);
 void desenharjogador(Player *p);
 void descarregarjogador(Player *p);
 
