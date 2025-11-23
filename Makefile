@@ -6,15 +6,18 @@ RAYLIB_DIR = deps/raylib
 INCLUDE_DIR = $(RAYLIB_DIR)/include
 LIB_DIR = $(RAYLIB_DIR)/lib
 
+# Diretório dos headers do jogo
+FASE1_INCLUDE = fase1
+
 # Compilador
 CC = gcc
 
 # Flags
-CFLAGS = -std=c99 -Wall -I$(INCLUDE_DIR)
+CFLAGS = -std=c99 -Wall -I$(INCLUDE_DIR) -I$(FASE1_INCLUDE)
 LDFLAGS = -L$(LIB_DIR) -lraylib -lopengl32 -lgdi32 -lwinmm
 
 # Arquivos .c automaticamente
-SRC = $(wildcard *.c)
+SRC = $(wildcard *.c) $(wildcard fase1/*.c)
 OBJ = $(SRC:.c=.o)
 
 # Regra principal
@@ -30,4 +33,3 @@ $(PROJECT_NAME): $(OBJ)
 # Limpar
 clean:
 	del /Q *.o *.exe
-
