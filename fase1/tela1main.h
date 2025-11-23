@@ -8,6 +8,6 @@
 #include "fase1.h"
 #include "tela1funcoes.h"
 
-void executartela1();
+Info_rodada executartela1(Info_rodada info_rodada);
 
 #endif

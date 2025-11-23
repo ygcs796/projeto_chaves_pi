@@ -25,10 +25,13 @@ typedef struct{
     int vidas;
     int dinheiro;
     Pizza pizza_atual;
+    bool vitoria_parte_1;
 }Info_rodada;
 
 
 void Executar_fase_1(void);
+void printar_vitoria();
+void printar_derrota();
 
 
 #endif

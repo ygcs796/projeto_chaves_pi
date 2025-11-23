@@ -5,13 +5,17 @@
 #include "fase1.h"
 #include "tela1funcoes.h"
 
-void executartela1() {
+Info_rodada executartela1(Info_rodada info_rodada) {
 
     float escala_x = (float)GetScreenWidth()  / LARGURA_BASE;
     float escala_y = (float)GetScreenHeight() / ALTURA_BASE;
 
+    float escala_x_FULL = (float)GetScreenWidth()  / LARGURA_BASE_FULL;
+    float escala_y_FULL = (float)GetScreenHeight() / ALTURA_BASE_FULL;
+
     Texture2D fundo = LoadTexture("imagens/fundo_fase1_ambiente1.png");
     printf("Fundo: id=%d, w=%d, h=%d\n", fundo.id, fundo.width, fundo.height);
+    
 
 
 
@@ -27,7 +31,7 @@ void executartela1() {
     Vector2 botao_cebola      = { 53 * escala_x, 458 * escala_y};
     Rectangle botao_suco      = { 56 * escala_x, 524 * escala_y, 97 * escala_x, 158 * escala_y};
     Rectangle botao_refri      = { 197 * escala_x, 524 * escala_y, 97 * escala_x, 158 * escala_y};
-    //Rectangle botao_de_selecao= { 500, 600, 80, 80 };
+    Rectangle botao_de_selecao= { 500 * escala_x, 600 * escala_y, 80 * escala_x, 80 * escala_y };
 
     const int raio_botoes_ingredientes = 46;
     
@@ -36,10 +40,18 @@ void executartela1() {
     float tempo_base_cronometro = GetTime(); // seta o primeiro tempo no relogio
     float cronometro = 0.0f; // define o cronometro
     bool ganhou = false; // tenho que tirar isso depois
-    int vidas = 3;
+    int vidas = info_rodada.vidas; // seta as vidas em relacao a rodada
     bool primeiro_loop = true;
-    int dinheiro = 0;
-    bool venceu_jogo = false;
+    int dinheiro = info_rodada.dinheiro;
+
+    int tempo_minimo_cronometro = GetRandomValue(4, 10);
+    int tempo_maximo_cronometro = tempo_minimo_cronometro + GetRandomValue(1, 3); // gera um intervalo aleatorio entre 1 e 3 segs 
+    
+    char texto_tempo_comanda[10];
+
+    sprintf(texto_tempo_comanda, "%02d - %02d", tempo_minimo_cronometro, tempo_maximo_cronometro); // defino a string que contem os intervalos de tempo de cozimento da pizza
+    
+    bool encerou_rodada = false;
 
     Texture2D lista_imagens_pizza[6];
     lista_imagens_pizza[5] = LoadTexture("imagens/pizza_queijo_e_molho.png");
@@ -52,7 +64,7 @@ void executartela1() {
     Texture2D correto_comanda = LoadTexture("imagens/sinal_de_correto_comanda_fase1.png");
     Texture2D x_bebidas = LoadTexture("imagens/x_verde_fase1_ambiente1.png");
 
-    while (!WindowShouldClose() && vidas > 0 && !venceu_jogo) {
+    while (!WindowShouldClose() && !encerou_rodada) {
 
         Vector2 mouse = GetMousePosition();
         
@@ -81,20 +93,10 @@ void executartela1() {
                 ingredientes[refri] = !ingredientes[refri];
         }
 
-        if(cronometro < 0.1f && !primeiro_loop){ //&& CheckCollisionPointRec(mouse, botao_de_selecao))) && !primeiro_loop){ // condicoes de encerramento
+        if((cronometro < 0.1f && !primeiro_loop) || (CheckCollisionPointRec(mouse, botao_de_selecao) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))){ //&& CheckCollisionPointRec(mouse, botao_de_selecao))) && !primeiro_loop){ // condicoes de encerramento
             ganhou = verificar_vitoria(ingredientes, ingredientes_temp);
-
-                if(ganhou){ // se ganhou a rodada
-                    dinheiro += retornar_dinheiro_rodada(ingredientes);
-                }else{ // se perdeu
-                    printf("perdeu vida");
-                    vidas--;
-                }
-            gerar_config_de_igredientes(ingredientes_temp); // muda a config caso o tempo acabe
-            tempo_base_cronometro = GetTime(); // muda o tempo base do cronometro(zera)
-
+            encerou_rodada = true;
         }
-
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
@@ -105,21 +107,35 @@ void executartela1() {
             DrawRectangleRec(botao_presunto, RED);
             DrawRectangleRec(botao_calabresa, ORANGE);
             DrawRectangleRec(botao_frango, BLACK);
-            DrawRectangleRec(botao_cebola, LIGHTGRAY);
-            DrawRectangleRec(botao_de_selecao, GREEN);*/
+            DrawRectangleRec(botao_cebola, LIGHTGRAY);*/
+            DrawRectangleRec(botao_de_selecao, GREEN);
 
             DrawTexture(lista_imagens_pizza[5], 354 * escala_x, 57 * escala_y, WHITE);
             printar_ingredientes(ingredientes, lista_imagens_pizza, x_bebidas);
-            cronometro = desenhar_e_retornar_cronometro(tempo_base_cronometro);
-            desenhar_dinheiro_e_vida(dinheiro, vidas);
+            cronometro = desenhar_e_retornar_cronometro(tempo_base_cronometro, escala_x_FULL, escala_y_FULL);
+            desenhar_dinheiro_e_vida(dinheiro, vidas, escala_x_FULL, escala_y_FULL);
+
+            DrawText(texto_tempo_comanda, 1753 * escala_x_FULL, 822 * escala_y_FULL, 40 * escala_x_FULL, BLACK); // printa o intervalo de cozimnto da pizza
 
             desenhar_conf_ingredientes(ingredientes_temp, correto_comanda);
 
         EndDrawing();
 
-        if (dinheiro >= 200)
-            venceu_jogo = true;
 
-        primeiro_loop = false; // encerra a imunidade de tirar vida 
+        primeiro_loop = false; // encerra a imunidade de tirar vida
     }
+
+    Pizza pizza_da_rodada;
+    for (int i = 0; i < numero_de_ingredientes; i++)
+        pizza_da_rodada.ingredientes[i] = ingredientes_temp[i];
+
+    pizza_da_rodada.tempo_de_cozimento[0] = tempo_minimo_cronometro;
+    pizza_da_rodada.tempo_de_cozimento[1] = tempo_maximo_cronometro;
+
+    info_rodada.dinheiro = dinheiro;
+    info_rodada.vidas = vidas;
+    info_rodada.pizza_atual = pizza_da_rodada;
+    info_rodada.vitoria_parte_1 = ganhou;
+
+    return info_rodada;
 }

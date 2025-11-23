@@ -78,15 +78,19 @@ void desenhar_conf_ingredientes(bool ingredientes_temp[], Texture2D img) {
         DrawTexture(img, 1182 * escala_x, 490 * escala_y, WHITE);
 }
 
-float desenhar_e_retornar_cronometro(float tempo_base_cronometro) {
+float desenhar_e_retornar_cronometro(float tempo_base_cronometro, float escala_x_FULL, float escala_y_FULL) {
     float tempo_atual = GetTime();
+    float tempo_disponivel = 10.0f;
 
     char texto[16];
-    float cronometro = (tempo_base_cronometro + 10.0f) - tempo_atual;
+    float cronometro = (tempo_base_cronometro + tempo_disponivel) - tempo_atual;
 
     sprintf(texto, "%.2f", cronometro);
 
-    DrawText(texto, 1300, 50, 20, BLACK);
+    if(cronometro < tempo_disponivel/3) // se so tiver 1/3 do tempo restante o cronometro fica vermelho
+        DrawText(texto, 1623 * escala_x_FULL, 202 * escala_y_FULL, 40 * escala_x_FULL, RED);
+    else
+        DrawText(texto, 1623 * escala_x_FULL, 202 * escala_y_FULL, 40 * escala_x_FULL, BLUE);
 
     return cronometro;
 }
@@ -108,14 +112,14 @@ int retornar_dinheiro_rodada(bool ingredientes[]) {
     return dinheiro_final;
 }
 
-void desenhar_dinheiro_e_vida(int dinheiro, int vida) {
-    char texto[16];
+void desenhar_dinheiro_e_vida(int dinheiro, int vida, float escala_x_FULL, float escala_y_FULL) {
+    char texto[6];
 
     sprintf(texto, "%d", dinheiro);
-    DrawText(texto, 1200, 50, 20, BLACK);
+    DrawText(texto, 1600 * escala_x_FULL, 959 * escala_y_FULL, 60 * escala_x_FULL, WHITE);
 
     sprintf(texto, "%d", vida);
-    DrawText(texto, 1100, 50, 20, BLACK);
+    DrawText(texto, 1783 * escala_x_FULL, 959 * escala_y_FULL, 60 * escala_x_FULL, WHITE);
 }
 
 void DesenharImagemFit(Texture2D img) {
