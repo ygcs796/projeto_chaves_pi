@@ -12,6 +12,7 @@ typedef enum {
 typedef struct {
     Vector2 pos;
     Rectangle hitbox;
+    bool precisa_ficar_parado; // variável criada para quando o chaves bater em hitbox de portas, por exemplo
 
     // VARIÁVEIS PARA MOVIMENTO POR BLOCOS NO JOGO
     bool isMoving; // indica se está ocorrendo o movimento de 1 BLOCO
@@ -37,5 +38,4 @@ void atualizarjogador(Player *p);
 void setarjogador(Player *p, Vector2 pos);
 void desenharjogador(Player *p);
 void descarregarjogador(Player *p);
-
 #endif

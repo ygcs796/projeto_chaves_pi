@@ -2,6 +2,7 @@
     "files.associations": {
         "raylib.h": "c",
         "stdlib.h": "c",
-        "player.h": "c"
+        "player.h": "c",
+        "stdbool.h": "c"
     }
 }
