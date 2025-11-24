@@ -49,7 +49,7 @@ int rodar_creditos(int larguraTela, int alturaTela) {
 
     if (!(quero_sair_dos_creditos))
     {
-        /* code */
+        
         CloseWindow();
 
     }

@@ -1,3 +1,4 @@
+# Makefile específico para mac 
 CC = gcc
 CFLAGS = -Ideps/raylib/mac/include -Wall
 LDFLAGS = -Ldeps/raylib/mac/lib -lraylib \

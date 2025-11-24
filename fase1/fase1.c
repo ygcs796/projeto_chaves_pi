@@ -73,5 +73,3 @@ void printar_derrota() {
         if (IsKeyPressed(KEY_ENTER)) break;
     }
 }
-
-
