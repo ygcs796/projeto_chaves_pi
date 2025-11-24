@@ -9,7 +9,7 @@ Fase_selecionada executar_vila() {
     Fase_selecionada fase_selecionada = erro; // coloca como erro para caso nada seja selecionado
     bool selecionado = false;
 
-    Vector2 pos_chaves = {960, 540};
+    Vector2 pos_chaves = {562, 1270};
 
     Player chaves;
     setarjogador(&chaves, pos_chaves);
@@ -26,17 +26,33 @@ Fase_selecionada executar_vila() {
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 
+    // criando a hitbox da porta da dona florinda
+    Rectangle porta_dona_florinda = { 1820, 515, 115, 230}; // seta a colisao da porta da dona florinda
+
     while (!selecionado && !WindowShouldClose() && !IsKeyDown(KEY_ESCAPE)) { // flag e encerramento da janela
 
         atualizarjogador(&chaves);
 
         camera.target = chaves.pos;
 
-        Rectangle porta_dona_florinda = { 1150, 510, 100, 100 }; // seta a colisao da porta da dona florinda
 
-        if (CheckCollisionRecs(porta_dona_florinda, chaves.hitbox)) { // verifica se a colisao com a porta da dona florinda ocorreu
-            fase_selecionada = porta_florinda;
-            selecionado = true;
+        if (CheckCollisionRecs(porta_dona_florinda, chaves.hitbox) && !(selecionado)) { // verifica se a colisao com a porta da dona florinda ocorreu
+            
+            chaves.precisa_ficar_parado = true;
+
+            
+
+            if (IsKeyDown(KEY_ENTER)) {
+
+                fase_selecionada = porta_florinda;
+                selecionado = true;
+
+            } else if (IsKeyDown(KEY_BACKSPACE)) {
+
+                chaves.pos.y -= chaves.tileSize;
+
+            }
+            
         }
 
         BeginDrawing();
@@ -49,7 +65,7 @@ Fase_selecionada executar_vila() {
                 DrawTexture(mapa_vila, 0, 0, WHITE);
 
                 desenharjogador(&chaves);
-                DrawCircle(1200, 560, 50, GREEN);        // porta
+                DrawRectangleLinesEx(porta_dona_florinda, 1, RED);        // comando para verificar a hitbox
                 DrawRectangleLines(porta_dona_florinda.x, porta_dona_florinda.y, porta_dona_florinda.width, porta_dona_florinda.height, BLUE);
 
             EndMode2D();
