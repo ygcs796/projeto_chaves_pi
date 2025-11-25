@@ -9,6 +9,7 @@
 #include "./fase1/tela_tutorial.h"
 
 int main(void) {
+    Font fonte_tutorial = LoadFont("./fase1/fontes/VCR_OSD_MONO_1.001.ttf");
 
     const int largura_tela = 1920; //GetMonitorWidth(0);  1366;
     const int altura_tela = 1080; //GetMonitorHeight(0); 768;
@@ -56,7 +57,15 @@ int main(void) {
 
                 }
 
-                
+                int tutorial_acabou = 0;
+
+                while (!tutorial_acabou) {
+
+                    tutorial_acabou = RodarTutorial(fonte_tutorial);
+
+                }
+
+                UnloadFont(fonte_tutorial);
                 
                 Executar_fase_1();
 

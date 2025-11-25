@@ -62,7 +62,7 @@ int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,
         
         DrawTexture(avatarAtual, 20, yAvatar, WHITE);
 
-        Vector2 posicaoTexto = {250, yCaixa + 50};
+        Vector2 posicaoTexto = {450, yCaixa + 50};
     
         float tamanhoFonte = 20.0f; 
         float espacamento = 2.0f;   
