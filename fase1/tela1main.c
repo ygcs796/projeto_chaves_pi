@@ -31,7 +31,7 @@ Info_rodada executartela1(Info_rodada info_rodada) {
     Vector2 botao_cebola      = { 53 * escala_x, 458 * escala_y};
     Rectangle botao_suco      = { 56 * escala_x, 524 * escala_y, 97 * escala_x, 158 * escala_y};
     Rectangle botao_refri      = { 197 * escala_x, 524 * escala_y, 97 * escala_x, 158 * escala_y};
-    Rectangle botao_de_selecao= { 500 * escala_x, 600 * escala_y, 80 * escala_x, 80 * escala_y };
+    Rectangle botao_de_selecao= { 500 * escala_x, 600 * escala_y, 200 * escala_x, 133 * escala_y };
 
     const int raio_botoes_ingredientes = 46;
     
@@ -63,6 +63,8 @@ Info_rodada executartela1(Info_rodada info_rodada) {
 
     Texture2D correto_comanda = LoadTexture("imagens/sinal_de_correto_comanda_fase1.png");
     Texture2D x_bebidas = LoadTexture("imagens/x_verde_fase1_ambiente1.png");
+
+    Texture2D imagem_botao_selecao = LoadTexture("imagens/Botao colocar .png");
 
     while (!WindowShouldClose() && !encerou_rodada) {
 
@@ -108,8 +110,9 @@ Info_rodada executartela1(Info_rodada info_rodada) {
             DrawRectangleRec(botao_calabresa, ORANGE);
             DrawRectangleRec(botao_frango, BLACK);
             DrawRectangleRec(botao_cebola, LIGHTGRAY);*/
-            DrawRectangleRec(botao_de_selecao, GREEN);
-
+            //rawRectangleRec(botao_de_selecao, GREEN);
+            DrawTexture(imagem_botao_selecao, 500 * escala_x, 600 * escala_y, WHITE);
+            
             DrawTexture(lista_imagens_pizza[5], 354 * escala_x, 57 * escala_y, WHITE);
             printar_ingredientes(ingredientes, lista_imagens_pizza, x_bebidas);
             cronometro = desenhar_e_retornar_cronometro(tempo_base_cronometro, escala_x_FULL, escala_y_FULL);

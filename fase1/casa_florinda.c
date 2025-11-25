@@ -1,81 +1,62 @@
 #include <raylib.h>
 #include <string.h>
 
-int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte, const char *falas[], int totalLinhas, const char *nomes[]) {
-    
-    // Variáveis estáticas para manter o estado da animação
+int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,
+                 const char *falas[], int totalLinhas, const char *nomes[])
+{
     static int linhaAtual = 0;
     static int letrasAtuais = 0;
     static int frameCounter = 0;
-    
-    int velocidadeDigitar = 3; 
+
+    int velocidadeDigitar = 3;
 
     frameCounter++;
-    
+
     // Efeito de digitação
     if (frameCounter >= velocidadeDigitar) {
         letrasAtuais++;
         frameCounter = 0;
     }
 
-    // Para o jogador conseguir adiantar o diálogo
+    // Avançar diálogo
     if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER)) {
-        int tamanhoFrase = strlen(falas[linhaAtual]);
 
-        // Se ainda está digitando, completa a frase instantaneamente
-        if (letrasAtuais < tamanhoFrase) {
-            letrasAtuais = tamanhoFrase;
-        }
-        // Se já terminou, passa para a próxima linha
-        else {
+        int tamanho = strlen(falas[linhaAtual]);
+
+        if (letrasAtuais < tamanho) {
+            letrasAtuais = tamanho;   // Completa digitação
+        } else {
             linhaAtual++;
             letrasAtuais = 0;
-            
-            // Se acabaram as falas, retorna 1 (FIM)
+
             if (linhaAtual >= totalLinhas) {
-                linhaAtual = 0; // Reseta para o futuro
-                return 1; 
+                linhaAtual = 0;
+                return 1; // terminou
             }
         }
     }
 
-    BeginDrawing();
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.8f));
 
-        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.8f));
+    int yCaixa = GetScreenHeight() - imgCaixa.height;
+    DrawTexture(imgCaixa, 0, yCaixa, WHITE);
 
-        // Posicionando a caixa de diálogo
-        int yCaixa = GetScreenHeight() - imgCaixa.height; 
-        DrawTexture(imgCaixa, 0, yCaixa, WHITE);
+    Texture2D avatarAtual = (linhaAtual % 2 == 0) ? imgA : imgB;
+    const char* nomeAtual  = (linhaAtual % 2 == 0) ? nomes[0] : nomes[1];
 
-        // Decidindo qual personagem fala 
-        Texture2D avatarAtual;
-        const char *nomeAtual;
-        
-        if (linhaAtual % 2 == 0) {
-            avatarAtual = imgA;
-            nomeAtual = nomes[0];
-        } else {
-            avatarAtual = imgB;
-            nomeAtual = nomes[1];
-        }
-        int yAvatar = yCaixa + (imgCaixa.height - avatarAtual.height) / 2;
-        
-        DrawTexture(avatarAtual, 20, yAvatar, WHITE);
+    int yAvatar = yCaixa + (imgCaixa.height - avatarAtual.height) / 2;
+    DrawTexture(avatarAtual, 20, yAvatar, WHITE);
 
-        Vector2 posicaoTexto = {250, yCaixa + 50};
-    
-        float tamanhoFonte = 20.0f; 
-        float espacamento = 2.0f;   
+    Vector2 posicaoTexto = {250, yCaixa + 50};
+    DrawTextEx(fonte, TextSubtext(falas[linhaAtual], 0, letrasAtuais),
+               posicaoTexto, 20, 2, WHITE);
 
-        DrawTextEx(fonte, TextSubtext(falas[linhaAtual], 0, letrasAtuais), posicaoTexto, tamanhoFonte, espacamento, WHITE);
+    DrawText("Pressione ESPAÇO...", GetScreenWidth() - 150,
+             GetScreenHeight() - 20, 10, GRAY);
 
-        // Instrução
-        DrawText("Pressione ESPAÇO...", GetScreenWidth() - 150, GetScreenHeight() - 20, 10, GRAY);
-
-    EndDrawing();
-
-    return 0; // retornando 0 enquanto o diálogo não acaba 
+    return 0;
 }
+
 
 int RodarCenaInicial(void) {
     
