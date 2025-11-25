@@ -1,0 +1,29 @@
+# Makefile específico para mac 
+CC = gcc
+CFLAGS = -Ideps/raylib/mac/include -Wall
+LDFLAGS = -Ldeps/raylib/mac/lib -lraylib \
+    -framework Cocoa -framework IOKit -framework CoreVideo -framework OpenGL \
+    -Wl,-rpath,@executable_path/deps/raylib/mac/lib
+
+SRC = \
+    main.c \
+    menu.c \
+    creditos.c \
+    vila.c \
+    fase1/fase1.c \
+    fase1/tela1main.c \
+    fase1/tela1funcoes.c \
+    fase1/tela2.c \
+    player.c
+
+OBJ = $(SRC:.c=.o)
+
+TARGET = game
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
+
+clean:
+	rm -f $(OBJ) $(TARGET)
