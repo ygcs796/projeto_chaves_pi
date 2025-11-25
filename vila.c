@@ -31,28 +31,30 @@ Fase_selecionada executar_vila() {
 
     while (!selecionado && !WindowShouldClose() && !IsKeyDown(KEY_ESCAPE)) { // flag e encerramento da janela
 
-        atualizarjogador(&chaves);
+        // verificar se o chaves colidiu com a porta da dona florinda
+        int dialogo_porta_florinda = CheckCollisionRecs(porta_dona_florinda, chaves.hitbox);
+
+        // condição para que o Chaves pare de andar quando chegar na porta da dona florinda
+        if (!dialogo_porta_florinda) {
+
+            atualizarjogador(&chaves);
+
+        } else { // para deixar o chaves no estático inclusive na arte dele
+
+            chaves.precisa_ficar_parado = true;
+
+        }
 
         camera.target = chaves.pos;
 
+        if (dialogo_porta_florinda) {
 
-        if (CheckCollisionRecs(porta_dona_florinda, chaves.hitbox) && !(selecionado)) { // verifica se a colisao com a porta da dona florinda ocorreu
-            
-            chaves.precisa_ficar_parado = true;
-
-            
-
-            if (IsKeyDown(KEY_ENTER)) {
-
+            if (IsKeyDown(KEY_ENTER)) { // avançando para a próxima fase
+    
                 fase_selecionada = porta_florinda;
                 selecionado = true;
-
-            } else if (IsKeyDown(KEY_BACKSPACE)) {
-
-                chaves.pos.y -= chaves.tileSize;
-
-            }
-            
+        
+        }  
         }
 
         BeginDrawing();
@@ -69,6 +71,24 @@ Fase_selecionada executar_vila() {
                 DrawRectangleLines(porta_dona_florinda.x, porta_dona_florinda.y, porta_dona_florinda.width, porta_dona_florinda.height, BLUE);
 
             EndMode2D();
+            
+            if (dialogo_porta_florinda) {
+
+                const char *texto_dialogo = "Quer entrar na casa?\nENTER para SIM";
+                int largura_texto = MeasureText(texto_dialogo, 30);
+                
+                // Coordenadas de centro da tela
+                int centro_x = 1920 / 2;
+                int centro_y = 1080 / 2;
+
+                // Desenha o fundo da caixa de diálogo (um retângulo)
+                // Use dimensões fixas ou dinâmicas (com base no MeasureText)
+                DrawRectangle(centro_x - 300, centro_y + 150, 600, 120, Fade(BLACK, 0.8f));
+                
+                // Desenha o texto (usando o MeasureText para centralizar o texto no retângulo)
+                DrawText(texto_dialogo, centro_x - largura_texto/2, centro_y + 175, 30, WHITE);
+
+            }
 
             DrawText("VILA CENTRAL", 10, 10, 20, BLACK);
 
