@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "vila.h"
 #include "player.h"
+#include "gerar_casa_florinda.h"
 
 Fase_selecionada executar_vila() {
 
@@ -54,9 +55,11 @@ Fase_selecionada executar_vila() {
                 fase_selecionada = porta_florinda;
                 selecionado = true;
         
-        }  
+            }  
         }
+        if (!dialogo_porta_florinda) {
 
+        
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
@@ -93,6 +96,11 @@ Fase_selecionada executar_vila() {
             DrawText("VILA CENTRAL", 10, 10, 20, BLACK);
 
         EndDrawing();
+        } else {
+
+            carregar_casa_florinda(chaves, camera); // ainda preciso testar
+
+        }
     }
     descarregarjogador(&chaves);
 
