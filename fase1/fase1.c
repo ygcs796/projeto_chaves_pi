@@ -5,6 +5,7 @@
 #include <time.h>
 #include "tela1main.h"
 #include "tela2.h"
+#include "tela_quer_entrar.h"
 
 void Executar_fase_1() {
 

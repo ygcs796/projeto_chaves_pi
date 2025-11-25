@@ -1,25 +1,29 @@
-// #include <raylib.h>
+#include <raylib.h>
+#include "tela_quer_entrar.h"
 
-// typedef enum TelaJogo{
-//     tela_jogo = 0;
-//     tela_pergunta,
-//     tela_proxima_fase,
-// } TelaJogo
+int RodarTelaPergunta(int largura, int altura){
 
-// typedef struct {
-//     Rectangle rec;
-//     Color cor;
-// } Objeto
+    int escolha = 0;
+    while(!WindowShouldClose() && escolha == 0){
 
-// int main(void) {
+        if(IsKeyPressed(KEY_Y)){
+            escolha = 1;
+        }
 
-//     const int larguratela = 800;
-//     const int alturatela = 450;
-//     InitWindow(larguratela, alturatela, "Prosseguir na fase 1?");
-
-//     TelaJogo tela_atual = tela_jogo;
-
-//     Objeto jogador = {{50,200,40,40}, BLUE};
+        else if(IsKeyPressed(KEY_N)){
+            escolha = 2;
+        }
     
+    BeginDrawing();
 
-// }
+    ClearBackground(BLACK);
+
+    DrawText("Voce esta na casa de Dona Florinda. Deseja continuar nela, entrando para a fase 1?", largura/2, altura/2, 30, WHITE);
+    DrawText("Y - vamos para a próxima fase!", largura/2 + 20, altura/2 + 20, 30, WHITE);
+    DrawText("N - fica pra próxima!", largura/2 + 40, altura/2 + 40, 30, WHITE);
+
+    EndDrawing();
+    }
+
+    return escolha;
+}

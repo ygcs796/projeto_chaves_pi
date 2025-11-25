@@ -59,7 +59,7 @@ Info_rodada executartela1(Info_rodada info_rodada) {
     lista_imagens_pizza[1] = LoadTexture("imagens/presunto (2).png");
     lista_imagens_pizza[2] = LoadTexture("imagens/calabresa.png");
     lista_imagens_pizza[3] = LoadTexture("imagens/frango2.png");
-    lista_imagens_pizza[4] = LoadTexture("imagens/cebola (2).png");
+    lista_imagens_pizza[4] = LoadTexture("imagens/cebola.png");
 
     Texture2D correto_comanda = LoadTexture("imagens/sinal_de_correto_comanda_fase1.png");
     Texture2D x_bebidas = LoadTexture("imagens/x_verde_fase1_ambiente1.png");
