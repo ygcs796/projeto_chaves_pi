@@ -5,6 +5,8 @@
 #include "player.h"
 #include "vila.h"
 #include "fase1/fase1.h"
+#include "./fase1/casa_florinda.h"
+#include "./fase1/tela_tutorial.h"
 
 int main(void) {
 
@@ -44,7 +46,20 @@ int main(void) {
             printf("porta selecionada: %d", fase_selecionada);
 
             if (fase_selecionada == porta_florinda){
+
+                int retorno_do_dialogo = 10;
+
+                while (retorno_do_dialogo == 10)
+                {
+                    
+                    retorno_do_dialogo = RodarCenaInicial();
+
+                }
+
+                
+                
                 Executar_fase_1();
+
             }
             
 
