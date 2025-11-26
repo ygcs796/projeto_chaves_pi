@@ -12,6 +12,8 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
 
     setarjogador(&jogador, pos_chaves);
 
+    jogador.direcao = CIMA;
+
     while(!WindowShouldClose()) {
         
         
@@ -24,7 +26,7 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
 
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLACK);
 
             BeginMode2D(camera);
 
@@ -41,5 +43,6 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
     }
 
     UnloadTexture(cenario_casa_florinda);
+    descarregarjogador(&jogador);
 
 }

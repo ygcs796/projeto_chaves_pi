@@ -42,7 +42,7 @@ Fase_selecionada executar_vila() {
 
         } else { // para deixar o chaves no estático inclusive na arte dele
 
-            chaves.precisa_ficar_parado = true;
+            chaves.frameAtual = 0;
 
         }
 
@@ -57,12 +57,10 @@ Fase_selecionada executar_vila() {
         
             }  
         }
-        if (!dialogo_porta_florinda) {
-
         
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLACK);
 
             BeginMode2D(camera);
 
@@ -96,8 +94,10 @@ Fase_selecionada executar_vila() {
             DrawText("VILA CENTRAL", 10, 10, 20, BLACK);
 
         EndDrawing();
-        } else {
-
+        
+        
+        if (selecionado){ // caso o jogador tenha selecionad entrar na casa da dona florinda...
+            
             carregar_casa_florinda(chaves, camera); // ainda preciso testar
 
         }
