@@ -34,7 +34,7 @@ typedef struct {
     
 } Player;
 
-void atualizarjogador(Player *p);
+void atualizarjogador(Player *p, Rectangle* barreiras, int quant_barreiras);
 void setarjogador(Player *p, Vector2 pos);
 void desenharjogador(Player *p);
 void descarregarjogador(Player *p);

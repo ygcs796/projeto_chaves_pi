@@ -8,6 +8,15 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
     Texture cenario_casa_florinda = LoadTextureFromImage(imagem_casa_florinda);
     UnloadImage(imagem_casa_florinda);
 
+    Rectangle barreiras_casa[] = {
+        {0, 580, 850, 320}, // PAREDE SUPERIOR (até a porta da cozinha)
+        {0, 580, 45, 1260}, // PAREDE ESQUERDA
+        {0, 1800, 850, 40}, // PAREDE INFERIOR
+        {805, 580, 45, 1260} // PAREDE DIREITA
+    };
+
+    const int quant_barreiras_casa = sizeof(barreiras_casa) / sizeof(barreiras_casa[0]);
+
     Vector2 pos_chaves = {641, 1636}; // testando
 
     setarjogador(&jogador, pos_chaves);
@@ -18,7 +27,7 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
         
         
         // entradas do teclado ou atualizações
-        atualizarjogador(&jogador);
+        atualizarjogador(&jogador, barreiras_casa, quant_barreiras_casa);
         camera.target = jogador.pos;
         
 
@@ -33,6 +42,13 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
                 DrawTexture(cenario_casa_florinda, 0, 0, WHITE);
 
                 desenharjogador(&jogador);
+                
+                // desenhando as barreiras da casa para debug
+                for (int i = 0; i < quant_barreiras_casa; i++) {
+
+                    DrawRectangleLinesEx(barreiras_casa[i], 2, RED);
+
+                }
 
             EndMode2D();
 

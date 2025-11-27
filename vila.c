@@ -38,7 +38,7 @@ Fase_selecionada executar_vila() {
         // condição para que o Chaves pare de andar quando chegar na porta da dona florinda
         if (!dialogo_porta_florinda) {
 
-            atualizarjogador(&chaves);
+            atualizarjogador(&chaves, NULL, 0);
 
         } else { // para deixar o chaves no estático inclusive na arte dele
 

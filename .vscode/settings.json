@@ -3,6 +3,7 @@
         "raylib.h": "c",
         "stdlib.h": "c",
         "player.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "stdio.h": "c"
     }
 }
