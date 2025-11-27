@@ -168,11 +168,11 @@ void setarjogador(Player *p, Vector2 pos) {
 
     // Define o tamanho da hitbox
     p->hitbox.width = (float) p->larguraFrame;
-    p->hitbox.height = (float) p->alturaFrame / 10;
+    p->hitbox.height = (float) p->alturaFrame;
 
     // Ajusta hitbox ao centro do player
     p->hitbox.x = pos.x - p->hitbox.width / 2;
-    p->hitbox.y = pos.y;
+    p->hitbox.y = pos.y - p->hitbox.height / 2;
 
     // INICIALIZAÇÃO DO MOVIMENTO POR BLOCOS
     p->isMoving = false;
