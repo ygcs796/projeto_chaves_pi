@@ -14,7 +14,9 @@ SRC = \
     fase1/tela1main.c \
     fase1/tela1funcoes.c \
     fase1/tela2.c \
-    player.c
+    player.c \
+    casa_florinda.c \
+    gerar_casa_florinda.c
 
 OBJ = $(SRC:.c=.o)
 
