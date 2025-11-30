@@ -2,6 +2,15 @@
 #include "raylib.h"
 #include "player.h"
 
+// a função abaixo indica as coordenadas do ponto em que o mouse está (aparece no canto superior esquerdo da tela, em vermelho)
+void desenhar_debug_mouse(Camera2D camera) { // debug, tirar depois
+    Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), camera);
+    DrawText(TextFormat("X: %.0f Y: %.0f", mouseWorld.x, mouseWorld.y), 
+             GetScreenToWorld2D((Vector2){10, 10}, camera).x, 
+             GetScreenToWorld2D((Vector2){10, 50}, camera).y, 
+             20, RED);
+}
+
 void carregar_casa_florinda(Player jogador, Camera2D camera) {
 
     Image imagem_casa_florinda = LoadImage("./imagens/casaFlorinda.png");
@@ -12,7 +21,9 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
         {0, 580, 850, 320}, // PAREDE SUPERIOR (até a porta da cozinha)
         {0, 580, 45, 1260}, // PAREDE ESQUERDA
         {0, 1800, 850, 40}, // PAREDE INFERIOR
-        {805, 580, 45, 1260} // PAREDE DIREITA
+        {805, 580, 45, 1260}, // PAREDE DIREITA
+        {230, 1030, 120, 120}, // MESA DA COZINHA
+        {275, 1375, 50, 50} // POLTRONA
     };
 
     const int quant_barreiras_casa = sizeof(barreiras_casa) / sizeof(barreiras_casa[0]);
@@ -43,12 +54,14 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
 
                 desenharjogador(&jogador);
                 
-                // desenhando as barreiras da casa para debug
+                // desenhando as barreiras da casa para debug, tirar depois
                 for (int i = 0; i < quant_barreiras_casa; i++) {
 
                     DrawRectangleLinesEx(barreiras_casa[i], 2, RED);
 
                 }
+
+                desenhar_debug_mouse(camera); // debug, tirar depois
 
             EndMode2D();
 
