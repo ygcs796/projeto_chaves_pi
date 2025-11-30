@@ -4,183 +4,125 @@
 #include "raymath.h"
 
 void atualizarjogador(Player *p, Rectangle* barreiras, int quant_barreiras) {
+    
+    Vector2 movimento = { 0.0f, 0.0f };
+    bool estaAndando = false;
 
-    if (p->isMoving)
-    { // condição que não aceita entradas do teclado enquanto a movimentação de 1 bloco não acabar
-        /* code */
+    // MOVIMENTAÇÃO SUAVE (CONTÍNUA)
+    if (IsKeyDown(KEY_RIGHT)) {
+        movimento.x += p->velocidade * GetFrameTime();
+        p->direcao = DIREITA;
+        estaAndando = true;
+    }
+    if (IsKeyDown(KEY_LEFT)) {
+        movimento.x -= p->velocidade * GetFrameTime();
+        p->direcao = ESQUERDA;
+        estaAndando = true;
+    }
+    if (IsKeyDown(KEY_UP)) {
+        movimento.y -= p->velocidade * GetFrameTime();
+        p->direcao = CIMA;
+        estaAndando = true;
+    }
+    if (IsKeyDown(KEY_DOWN)) {
+        movimento.y += p->velocidade * GetFrameTime();
+        p->direcao = BAIXO;
+        estaAndando = true;
+    }
+
+    // COLISÃO EIXO X
+    p->hitbox.x += movimento.x; 
+    bool colidiuX = false;
+    for (int i = 0; i < quant_barreiras; i++) {
+        if (CheckCollisionRecs(p->hitbox, barreiras[i])) {
+            colidiuX = true;
+            break;
+        }
+    }
+    if (colidiuX) {
+        p->hitbox.x -= movimento.x; // Desfaz movimento X se bateu
+    } else {
+        p->pos.x += movimento.x;    // Aplica movimento X se livre
+    }
+
+    // COLISÃO EIXO Y
+    p->hitbox.y += movimento.y; 
+    bool colidiuY = false;
+    for (int i = 0; i < quant_barreiras; i++) {
+        if (CheckCollisionRecs(p->hitbox, barreiras[i])) {
+            colidiuY = true;
+            break;
+        }
+    }
+    if (colidiuY) {
+        p->hitbox.y -= movimento.y; // Desfaz movimento Y se bateu
+    } else {
+        p->pos.y += movimento.y;    // Aplica movimento Y se livre
+    }
+
+    // ATUALIZAÇÃO DA HITBOX (MANTÉM NOS PÉS)
+    float compensacao_x = 0.0f; 
+    p->hitbox.x = (p->pos.x - (p->hitbox.width / 2)) + compensacao_x;
+    p->hitbox.y = (p->pos.y + p->alturaFrame / 2.0f) - p->hitbox.height;
+
+
+    // ANIMAÇÃO DE CAMINHADA (CICLO DE 4 PASSOS)
+    if (estaAndando) {
         p->moveTimer += GetFrameTime();
         
-        float progress = p->moveTimer / p->moveTime;
-        if (progress > 1.0f) progress = 1.0f;
-        
-        p->pos = Vector2Lerp(p->startPos, p->targetPos, progress);
-        
-        // SINCRONIZAÇÃO DA ANIMAÇÃO COM O MOVIMENTO
-        if (progress < (1.0f / 2.0f))
-        {
-            /* code */
-            // verificação para variar as pernas a cada andada do Chaves
-            if (p->pernaParaAndar == 1)
-            {
-                /* code */
-                p->frameAtual = 1;
-                
-            } else {
-                
-                p->frameAtual = 3;
-                
+        // A cada 0.15s troca o frame
+        if (p->moveTimer >= 0.15f) { 
+            p->moveTimer = 0.0f; 
+            
+            // Ciclo: 0 -> 1 -> 2 -> 3 -> 0...
+            p->pernaParaAndar++; 
+            if (p->pernaParaAndar > 3) p->pernaParaAndar = 0;
+
+            // Mapeamento do ciclo para os frames corretos
+            switch (p->pernaParaAndar) {
+                case 0: p->frameAtual = 1; break; // Perna Esquerda
+                case 1: p->frameAtual = 0; break; // Centro
+                case 2: p->frameAtual = 3; break; // Perna Direita
+                case 3: p->frameAtual = 0; break; // Centro
             }
-        } else if (progress < 1.0f){
-            
-            p->frameAtual = 0; // Chaves parado;
-            
-        } else if (progress == 1.0f) { // quando o Chaves tiver acabado o movimento de 1 bloco para uma direção definida
-            p->pos = p->targetPos;
-            p->isMoving = false;
-            p->moveTimer = 0.0f;
-            
-            
-            // decidi a próxima perna (sprite) do movimento do Chaves
-            if (p->pernaParaAndar == 1)
-            {
-                /* code */
-                p->pernaParaAndar = 2;
-                
-            } else {
-                
-                p->pernaParaAndar = 1;
-                
-            }
-            
-            
-        } 
-        
+        }
     } else {
-        
-        // p->startPos = p->pos;
-        
-        // criando variáveis para verificar se haverá colisão entre a futura posição do chaves e alguma barrreira de movimentação
-        Vector2 proximaPosicaoCandidata = p->pos;
-        DirecaoJogador proximaDirecao = p->direcao;
-
-        // avalia o movimento do jogador e define a direção dele
-        if (IsKeyDown(KEY_RIGHT)) {
-            // p->targetPos.x = p->pos.x + p->tileSize;
-            // p->direcao = DIREITA;
-            // p->isMoving = true;
-
-            proximaDirecao = DIREITA;
-            proximaPosicaoCandidata.x += p->tileSize;
-
-        } else if (IsKeyDown(KEY_LEFT)){
-            // p->targetPos.x = p->pos.x - p->tileSize;
-            // p->direcao = ESQUERDA;
-            // p->isMoving = true;
-
-            proximaDirecao = ESQUERDA;
-            proximaPosicaoCandidata.x -= p->tileSize;
-
-        } else if (IsKeyDown(KEY_UP)){
-            // p->targetPos.y = p->pos.y - p->tileSize;
-            // p->direcao = CIMA;
-            // p->isMoving = true;    
-
-            proximaDirecao = CIMA;
-            proximaPosicaoCandidata.y -= p->tileSize;
-
-        } else if (IsKeyDown(KEY_DOWN)){
-            // p->targetPos.y = p->pos.y + p->tileSize;
-            // p->direcao = BAIXO;
-            // p->isMoving = true;
-
-            proximaDirecao = BAIXO;
-            proximaPosicaoCandidata.y += p->tileSize;
-
-        }
-        
-        // LÓGICA DE COLISÃO
-        if (proximaPosicaoCandidata.x != p->pos.x || proximaPosicaoCandidata.y != p->pos.y) { // caso alguma tecla tenha sido pressionada;
-
-            // criando uma hitbox temporária da próxima posição do Chaves
-            Rectangle proximaHitbox = {
-                proximaPosicaoCandidata.x - (p->hitbox.width / 2),
-                proximaPosicaoCandidata.y - (p->hitbox.height / 2),
-                p->hitbox.width,
-                p->hitbox.height
-            };
-
-            bool colidiu = false;
-
-            // FOR para verificar se ele colidiu com algum dos retângulos da array que foi passada como parâmetro
-            for (int i = 0; (i < quant_barreiras) && (!colidiu); i++) {
-
-                if(CheckCollisionRecs(proximaHitbox, barreiras[i])) {
-                    
-                    colidiu = true; // se o jogador colidir com qualquer uma das barreiras, o FOR vai quebrar (sem usar break)
-                    
-                }
-
-            }
-
-            if (!colidiu) { // caso NÃO HAJA COLISÃO
-                p->direcao = proximaDirecao;
-                p->startPos = p->pos;
-                p->targetPos = proximaPosicaoCandidata;
-                p->isMoving = true;
-                p->moveTimer = 0.0f;
-                p->frameAtual = 1; //TODO verificar se isso aqui dá certo
-
-            } else { // caso HAJA COLISÃO
-
-                p->frameAtual = 0; // player parado
-
-            }
-
-        } else { // caso nenhuma tecla seja clicada
-
-            p->frameAtual = 0; // player parado
-            
-        }
-            
-
-
+        // Reseta para parado
+        p->frameAtual = 0;
+        p->pernaParaAndar = 0;
+        p->moveTimer = 0.0f;
     }
-    
-    // atualiza a hitbox(centralizada)
-    p->hitbox.x = p->pos.x - p->hitbox.width / 2;
-    p->hitbox.y = p->pos.y - p->hitbox.height / 2;
 }
-    
+
+
 void setarjogador(Player *p, Vector2 pos) {
     p->pos = pos;
     p->precisa_ficar_parado = false;
 
-    // CARREGAMENTO DA IMAGEM DOS SPRITES E CONFIG DAS DIMENSÕES DE 1 ÚNICO FRAME
+    // Carregamento
     p->imagemSprites = LoadImage("imagens/chavinho_movimentacao.png");
     p->texSprites = LoadTextureFromImage(p->imagemSprites);
     p->larguraFrame = 160;
     p->alturaFrame = 200;
 
-    // Configuração da animação
+    // Configuração inicial
     p->direcao = BAIXO;
-    p->frameAtual = 0; // frame inicial/base (Chaves parado)
-    p->pernaParaAndar = 1;
+    p->frameAtual = 0; 
+    p->pernaParaAndar = 0; // Inicializa ciclo de animação
+    p->moveTimer = 0.0f;   // Inicializa timer
+    p->velocidade = 200.0f; // Define velocidade em pixels/segundo
 
-    // Define o tamanho da hitbox
-    p->hitbox.width = (float) p->larguraFrame;
-    p->hitbox.height = (float) p->alturaFrame;
+    // Hitbox (Pés)
+    p->hitbox.width = 90;
+    p->hitbox.height = 50;
 
-    // Ajusta hitbox ao centro do player
-    p->hitbox.x = pos.x - p->hitbox.width / 2;
-    p->hitbox.y = pos.y - p->hitbox.height / 2;
-
-    // INICIALIZAÇÃO DO MOVIMENTO POR BLOCOS
-    p->isMoving = false;
-    p->targetPos = pos;
-    p->moveTimer = 0.0f;
-    p->moveTime = 0.5f;
-    p->tileSize = p->larguraFrame * 0.75;
+    float compensacao_x = 0.0f; // Mesmo valor usado no update!
+    p->hitbox.x = (pos.x - (p->hitbox.width / 2)) + compensacao_x;
+    p->hitbox.y = (pos.y + p->alturaFrame / 2.0f) - p->hitbox.height;
+    
+    p->isMoving = false; 
 }
+
 
 void desenharjogador(Player *p) {
 

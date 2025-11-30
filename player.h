@@ -31,6 +31,8 @@ typedef struct {
     int frameAtual;
 
     int pernaParaAndar; // variável para animação
+
+    float velocidade;
     
 } Player;
 

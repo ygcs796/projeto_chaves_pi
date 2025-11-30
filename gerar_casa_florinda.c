@@ -22,8 +22,13 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
         {0, 580, 45, 1260}, // PAREDE ESQUERDA
         {0, 1800, 850, 40}, // PAREDE INFERIOR
         {805, 580, 45, 1260}, // PAREDE DIREITA
-        {230, 1030, 120, 120}, // MESA DA COZINHA
-        {275, 1375, 50, 50} // POLTRONA
+        {216, 1012, 144, 243}, // MESA DA COZINHA
+        {61, 1006, 66, 222}, // MOVEL DE MADEIRA DA COZINHA
+        {365, 1041, 40, 140}, // CADEIRA COZINHA (DIREITA)
+        {250, 935, 75, 75}, // CADEIRA COZINHA (CIMA) 
+        {260, 1327, 100, 120}, // POLTRONA
+        {106, 1526, 80, 180}, // SOFÁ
+        {463, 1550, 55, 100} // MÓVEL DE MADEIRA DA SALA 
     };
 
     const int quant_barreiras_casa = sizeof(barreiras_casa) / sizeof(barreiras_casa[0]);
