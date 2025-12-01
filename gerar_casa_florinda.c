@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "player.h"
+#include "npc.h"
+
+// void setar_dona_florinda(NPC* florinda, Vector2 pos) {
+
+//     florinda->position = pos;
+//     florinda->alturaFrame =
+
+// }
 
 // a função abaixo indica as coordenadas do ponto em que o mouse está (aparece no canto superior esquerdo da tela, em vermelho)
 void desenhar_debug_mouse(Camera2D camera) { // debug, tirar depois

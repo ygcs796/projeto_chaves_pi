@@ -5,6 +5,7 @@
         "player.h": "c",
         "stdbool.h": "c",
         "stdio.h": "c",
-        "*.m": "c"
+        "*.m": "c",
+        "gerar_casa_florinda.h": "c"
     }
 }

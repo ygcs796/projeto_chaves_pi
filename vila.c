@@ -4,9 +4,11 @@
 #include "vila.h"
 #include "player.h"
 #include "gerar_casa_florinda.h"
+#include "fase1/fase1.h"
 
 Fase_selecionada executar_vila() {
 
+    // CONFIGURAÇÕES INICIAIS
     Fase_selecionada fase_selecionada = erro; // coloca como erro para caso nada seja selecionado
     bool selecionado = false;
 
@@ -30,8 +32,10 @@ Fase_selecionada executar_vila() {
     // criando a hitbox da porta da dona florinda
     Rectangle porta_dona_florinda = { 1820, 515, 115, 230}; // seta a colisao da porta da dona florinda
 
-    while (!selecionado && !WindowShouldClose() && !IsKeyDown(KEY_ESCAPE)) { // flag e encerramento da janela
-
+    while (!selecionado && !WindowShouldClose()) { // flag e encerramento da janela
+        
+        camera.target = chaves.pos;
+        
         // verificar se o chaves colidiu com a porta da dona florinda
         int dialogo_porta_florinda = CheckCollisionRecs(porta_dona_florinda, chaves.hitbox);
 
@@ -44,18 +48,13 @@ Fase_selecionada executar_vila() {
 
             chaves.frameAtual = 0;
 
-        }
-
-        camera.target = chaves.pos;
-
-        if (dialogo_porta_florinda) {
-
             if (IsKeyDown(KEY_ENTER)) { // avançando para a próxima fase
     
                 fase_selecionada = porta_florinda;
                 selecionado = true;
         
-            }  
+            } 
+
         }
         
         BeginDrawing();
@@ -69,25 +68,28 @@ Fase_selecionada executar_vila() {
 
                 desenharjogador(&chaves);
                 DrawRectangleLinesEx(porta_dona_florinda, 1, RED);        // comando para verificar a hitbox
-                DrawRectangleLines(porta_dona_florinda.x, porta_dona_florinda.y, porta_dona_florinda.width, porta_dona_florinda.height, BLUE);
 
             EndMode2D();
             
+            // DESENHO DO DIALOGO (PERGUNTA SE O JOGADOR QUER ENTRAR NA CASA DA DONA FLORINDA)
             if (dialogo_porta_florinda) {
 
-                const char *texto_dialogo = "Quer entrar na casa?\nENTER para SIM";
-                int largura_texto = MeasureText(texto_dialogo, 30);
+                const char *texto_dialogo1 = "QUER ENTRAR NA CASA DA DONA FLORINDA?\n";
+                const char *texto_dialogo2 = "ENTER para SIM";
+                int largura_texto = MeasureText(texto_dialogo1, 30);
+                int largura_texto_2 = MeasureText(texto_dialogo2, 30);
                 
                 // Coordenadas de centro da tela
                 int centro_x = 1920 / 2;
                 int centro_y = 1080 / 2;
 
                 // Desenha o fundo da caixa de diálogo (um retângulo)
-                // Use dimensões fixas ou dinâmicas (com base no MeasureText)
-                DrawRectangle(centro_x - 300, centro_y + 150, 600, 120, Fade(BLACK, 0.8f));
+                DrawRectangle(centro_x - (largura_texto / 2) - 20, centro_y + 150, 750, 120, Fade(BLACK, 0.8f));
                 
                 // Desenha o texto (usando o MeasureText para centralizar o texto no retângulo)
-                DrawText(texto_dialogo, centro_x - largura_texto/2, centro_y + 175, 30, WHITE);
+                DrawText(texto_dialogo1, centro_x - largura_texto/2, centro_y + 175, 30, WHITE);
+                DrawText(texto_dialogo2, centro_x - (largura_texto_2 / 2), centro_y + 220, 30, WHITE);
+
 
             }
 
@@ -96,9 +98,9 @@ Fase_selecionada executar_vila() {
         EndDrawing();
         
         
-        if (selecionado){ // caso o jogador tenha selecionad entrar na casa da dona florinda...
+        if (fase_selecionada == porta_florinda){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
             
-            carregar_casa_florinda(chaves, camera); // ainda preciso testar
+            carregar_casa_florinda(chaves, camera);
 
         }
     }

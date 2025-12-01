@@ -14,17 +14,17 @@ void atualizarjogador(Player *p, Rectangle* barreiras, int quant_barreiras) {
         p->direcao = DIREITA;
         estaAndando = true;
     }
-    if (IsKeyDown(KEY_LEFT)) {
+    else if (IsKeyDown(KEY_LEFT)) {
         movimento.x -= p->velocidade * GetFrameTime();
         p->direcao = ESQUERDA;
         estaAndando = true;
     }
-    if (IsKeyDown(KEY_UP)) {
+    else if (IsKeyDown(KEY_UP)) {
         movimento.y -= p->velocidade * GetFrameTime();
         p->direcao = CIMA;
         estaAndando = true;
     }
-    if (IsKeyDown(KEY_DOWN)) {
+    else if (IsKeyDown(KEY_DOWN)) {
         movimento.y += p->velocidade * GetFrameTime();
         p->direcao = BAIXO;
         estaAndando = true;
@@ -80,10 +80,10 @@ void atualizarjogador(Player *p, Rectangle* barreiras, int quant_barreiras) {
 
             // Mapeamento do ciclo para os frames corretos
             switch (p->pernaParaAndar) {
-                case 0: p->frameAtual = 1; break; // Perna Esquerda
-                case 1: p->frameAtual = 0; break; // Centro
-                case 2: p->frameAtual = 3; break; // Perna Direita
-                case 3: p->frameAtual = 0; break; // Centro
+                case 1: p->frameAtual = 1; break; // Perna Esquerda
+                case 2: p->frameAtual = 2; break; // Centro
+                case 3: p->frameAtual = 3; break; // Perna Direita
+                case 0: p->frameAtual = 0; break; // Centro
             }
         }
     } else {
@@ -110,7 +110,7 @@ void setarjogador(Player *p, Vector2 pos) {
     p->frameAtual = 0; 
     p->pernaParaAndar = 0; // Inicializa ciclo de animação
     p->moveTimer = 0.0f;   // Inicializa timer
-    p->velocidade = 200.0f; // Define velocidade em pixels/segundo
+    p->velocidade = 250.0f; // Define velocidade em pixels/segundo
 
     // Hitbox (Pés)
     p->hitbox.width = 90;

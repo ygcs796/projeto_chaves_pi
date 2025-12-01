@@ -13,14 +13,14 @@ void Executar_fase_1() {
    while (!WindowShouldClose()) {
 
     BeginDrawing();
-    ClearBackground(BLACK);
+        ClearBackground(BLACK);
 
-    int r = RodarCenaInicial();
+        int r = RodarCenaInicial();
 
-    if (r == 1) {
-        // terminou a cena
-        break;
-    }
+        if (r == 1) {
+            // terminou a cena
+            break;
+        }
 
     EndDrawing();
 }
