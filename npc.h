@@ -13,7 +13,6 @@ typedef struct {
     int larguraFrame;
     int alturaFrame;
 
-
 } NPC;
 
 #endif
