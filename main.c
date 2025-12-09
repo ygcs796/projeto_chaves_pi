@@ -40,7 +40,7 @@ int main(void) {
             break;
         case GAMEPLAY:
             /* code */
-            Fase_selecionada fase_selecionada = executar_vila(); // executa a  vila e retorna um enum Fase_selcionada do arquivo vila.h
+            executar_vila(); // executa a  vila e retorna um enum Fase_selcionada do arquivo vila.h
             break;
         default:
             break;

@@ -2,6 +2,8 @@
 #include "raylib.h"
 #include "player.h"
 #include "npc.h"
+#include "fase1/fase1.h"
+#include "fase1/tela_tutorial.h"
 
 // void setar_dona_florinda(NPC* florinda, Vector2 pos) {
 
@@ -19,7 +21,11 @@ void desenhar_debug_mouse(Camera2D camera) { // debug, tirar depois
              20, RED);
 }
 
-void carregar_casa_florinda(Player jogador, Camera2D camera) {
+void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
+
+    bool fase_acabou = false;
+    
+    Rectangle hitbox_florinda = {365, 980, jogador->hitbox.width, jogador->hitbox.height};
 
     Image imagem_casa_florinda = LoadImage("./imagens/casaFlorinda.png");
     Texture cenario_casa_florinda = LoadTextureFromImage(imagem_casa_florinda);
@@ -43,17 +49,26 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
 
     Vector2 pos_chaves = {641, 1636}; // testando
 
-    setarjogador(&jogador, pos_chaves);
+    setarjogador(jogador, pos_chaves);
 
-    jogador.direcao = CIMA;
+    jogador->direcao = CIMA;
 
-    while(!WindowShouldClose()) {
+    while(!WindowShouldClose() && !fase_acabou) {
         
+        // verificando a colisão entre a hitbox da dona florinda e do chaves para que haja o diálogo e a fase1
+        bool colisao_chaves_florinda = CheckCollisionRecs(jogador->hitbox, hitbox_florinda);
+
+        // deixando o movimento do Chaves dependente da colisão entre ele e a dona florinda
+        // caso não aconteça a colisão, o Chaves continua se mexendo
+        if (!colisao_chaves_florinda) {
+
+            // entradas do teclado ou atualizações
+            atualizarjogador(jogador, barreiras_casa, quant_barreiras_casa);
+            camera->target = jogador->pos;
+            
+        }
         
-        // entradas do teclado ou atualizações
-        atualizarjogador(&jogador, barreiras_casa, quant_barreiras_casa);
-        camera.target = jogador.pos;
-        
+        if (!colisao_chaves_florinda) {
 
         // desenho
 
@@ -61,12 +76,15 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
 
             ClearBackground(BLACK);
 
-            BeginMode2D(camera);
+            BeginMode2D(*camera);
 
                 DrawTexture(cenario_casa_florinda, 0, 0, WHITE);
 
-                desenharjogador(&jogador);
+                desenharjogador(jogador);
                 
+                // desenhando a hitbox da dona florinda
+                DrawRectangleLinesEx(hitbox_florinda, 2, RED);
+
                 // desenhando as barreiras da casa para debug, tirar depois
                 for (int i = 0; i < quant_barreiras_casa; i++) {
 
@@ -74,17 +92,24 @@ void carregar_casa_florinda(Player jogador, Camera2D camera) {
 
                 }
 
-                desenhar_debug_mouse(camera); // debug, tirar depois
+                desenhar_debug_mouse(*camera); // debug, tirar depois
 
             EndMode2D();
 
             DrawText("CASA DA DONA FLORINDA", 10, 10, 20, BLACK); // testando
 
         EndDrawing();
+        } else {
 
+            Executar_fase_1();
+
+            // mudando o valor da variável que controla o while
+            fase_acabou = true;
+
+        }
     }
 
     UnloadTexture(cenario_casa_florinda);
-    descarregarjogador(&jogador);
+    descarregarjogador(jogador);
 
 }

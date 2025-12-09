@@ -7,24 +7,25 @@
 #include "tela2.h"
 #include "tela_quer_entrar.h"
 #include "casa_florinda.h"
+#include "tela_tutorial.h"
 
 void Executar_fase_1() {
 
    while (!WindowShouldClose()) {
 
-    BeginDrawing();
-        ClearBackground(BLACK);
+        BeginDrawing();
+        
+            int r = RodarCenaInicial();
 
-        int r = RodarCenaInicial();
+            if (r == 1) {
+                // terminou a cena
+                break;
+            }
 
-        if (r == 1) {
-            // terminou a cena
-            break;
-        }
+        EndDrawing();
+    }
 
-    EndDrawing();
-}
-
+    RodarTutorial();
 
     Info_rodada info_rodada;
     info_rodada.vidas = 3;
@@ -59,10 +60,10 @@ void Executar_fase_1() {
             info_rodada.vidas--;
     }
 
-    /*if(info_rodada.vidas == 0)
+    if(info_rodada.vidas == 0)
         printar_derrota();
     else
-        printar_vitoria();*/
+        printar_vitoria();
 
     
 }

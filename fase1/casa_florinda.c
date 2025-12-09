@@ -47,7 +47,7 @@ int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,
     int yAvatar = yCaixa + (imgCaixa.height - avatarAtual.height) / 2;
     DrawTexture(avatarAtual, 20, yAvatar, WHITE);
 
-    Vector2 posicaoTexto = {250, yCaixa + 50};
+    Vector2 posicaoTexto = {500, yCaixa + 50};
     DrawTextEx(fonte, TextSubtext(falas[linhaAtual], 0, letrasAtuais),
                posicaoTexto, 20, 2, WHITE);
 
