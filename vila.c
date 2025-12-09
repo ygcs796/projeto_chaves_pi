@@ -82,11 +82,7 @@ Fase_selecionada executar_vila() {
     Fase_selecionada fase_selecionada = erro; // coloca como erro para caso nada seja selecionado
     bool selecionado = false;
 
-    // criando um bool temporário
-    bool temp = false;
-
     Vector2 pos_chaves = {562, 1270};
-    printf("\nEstá passando pela posição inicial!\n");
 
     Player chaves;
     setarjogador(&chaves, pos_chaves);
@@ -103,15 +99,13 @@ Fase_selecionada executar_vila() {
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 
-    while (!selecionado && !WindowShouldClose()) { // flag e encerramento da janela
+    while (/*!selecionado && */!WindowShouldClose()) { // flag e encerramento da janela
         
         rodar_vila(&chaves, &camera, &mapa_vila, &fase_selecionada, &selecionado);
         
-        if ((fase_selecionada == porta_florinda) && !temp){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
+        if ((fase_selecionada == porta_florinda)){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
             
-            carregar_casa_florinda(chaves, camera);
-
-            temp = true;
+            carregar_casa_florinda(&chaves, &camera);
 
             // quando acabar a casa da dona florinda, eu vou mudar o valor dessa variável
             fase_selecionada = erro;
@@ -120,7 +114,6 @@ Fase_selecionada executar_vila() {
     
             chaves.pos = (Vector2){1820, 800};
 
-            printf("\nEstá passando pelo final da fase da dona florinda\n");
 
         }
     }

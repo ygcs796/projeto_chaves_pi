@@ -66,12 +66,12 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
             atualizarjogador(jogador, barreiras_casa, quant_barreiras_casa);
             camera->target = jogador->pos;
             
+        } else {
+
+            jogador->frameAtual = 0;
+
         }
         
-        if (!colisao_chaves_florinda) {
-
-        // desenho
-
         BeginDrawing();
 
             ClearBackground(BLACK);
@@ -99,7 +99,8 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
             DrawText("CASA DA DONA FLORINDA", 10, 10, 20, BLACK); // testando
 
         EndDrawing();
-        } else {
+
+        if (colisao_chaves_florinda) {
 
             Executar_fase_1();
 

@@ -29,3 +29,6 @@ dist/
 # Windows lixo
 Thumbs.db
 
+# Pastas de config do windows
+.vscode/
+

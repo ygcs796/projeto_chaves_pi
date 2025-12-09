@@ -36,7 +36,7 @@ int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,
         }
     }
 
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.8f));
+    // DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.8f));
 
     int yCaixa = GetScreenHeight() - imgCaixa.height;
     DrawTexture(imgCaixa, 0, yCaixa, WHITE);

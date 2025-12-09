@@ -20,6 +20,8 @@ int main(void) {
     const int altura_tela = 1080;//1080; //GetMonitorHeight(0); 768;
     InitWindow(largura_tela, altura_tela, "Chaves: em busca da chave perdida"); // abre a janela
     
+    ToggleFullscreen();
+
     SetTargetFPS(60);
 
     GameState tela_atual = MENU;

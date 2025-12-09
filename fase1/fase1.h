@@ -29,7 +29,7 @@ typedef struct{
 }Info_rodada;
 
 
-void Executar_fase_1(void);
+void Executar_fase_1();
 void printar_vitoria();
 void printar_derrota();
 
