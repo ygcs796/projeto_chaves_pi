@@ -17,6 +17,7 @@ raylib.dll
 # Executáveis do projeto
 chaves
 chaves.exe
+game
 
 # Build temporários
 build/

@@ -9,6 +9,7 @@ typedef enum {
     CIMA = 2,
     ESQUERDA = 3,
 } DirecaoJogador;
+
 typedef struct {
     Vector2 pos;
     Rectangle hitbox;
@@ -33,6 +34,8 @@ typedef struct {
     int pernaParaAndar; // variável para animação
 
     float velocidade;
+
+    int interagindo;
     
 } Player;
 

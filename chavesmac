@@ -1,9 +1,6 @@
-# Makefile específico para mac 
 CC = gcc
 CFLAGS = -Ideps/raylib/mac/include -Wall
-LDFLAGS = -Ldeps/raylib/mac/lib -lraylib \
-    -framework Cocoa -framework IOKit -framework CoreVideo -framework OpenGL \
-    -Wl,-rpath,@executable_path/deps/raylib/mac/lib
+LDFLAGS = -Ldeps/raylib/mac/lib -lraylib -framework Cocoa -framework IOKit -framework CoreVideo -framework OpenGL -Wl,-rpath,@executable_path/deps/raylib/mac/lib
 
 SRC = \
     main.c \
@@ -16,7 +13,9 @@ SRC = \
     fase1/tela2.c \
     player.c \
     fase1/casa_florinda.c \
-    gerar_casa_florinda.c
+    fase1/tela_tutorial.c \
+    gerar_casa_florinda.c \
+    gerar_florinda.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -49,63 +49,48 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
     setar_dona_florinda(&dona_florinda);
 
     jogador->direcao = CIMA;
+    bool cutscene_iniciada = false;
 
     while(!WindowShouldClose() && !fase_acabou) {
         
-        // verificando a colisão entre a hitbox da dona florinda e do chaves para que haja o diálogo e a fase1
-        bool colisao_chaves_florinda = CheckCollisionRecs(jogador->hitbox, dona_florinda.hitbox/*hitbox_florinda*/);
+        bool colisao_chaves_florinda = CheckCollisionRecs(jogador->hitbox, dona_florinda.hitbox);
 
-        // deixando o movimento do Chaves dependente da colisão entre ele e a dona florinda
-        // caso não aconteça a colisão, o Chaves continua se mexendo
-        if (!colisao_chaves_florinda) {
+        // 2. ATUALIZE A TRAVA
+        // Se colidiu E AINDA NÃO tinha iniciado a cutscene, trava agora.
+        if (colisao_chaves_florinda && !cutscene_iniciada) {
+            cutscene_iniciada = true;
+            
+            // Força a parada imediatamente UMA ÚNICA VEZ
+            jogador->frameAtual = 0;
+            jogador->interagindo = 1;
+            jogador->moveTimer = 0.0f;
+            jogador->pernaParaAndar = 0;
+        }
 
-            // entradas do teclado ou atualizações
+        // 3. USE A TRAVA PARA DECIDIR O MOVIMENTO
+        // Se a cutscene NÃO foi iniciada, ele pode andar.
+        if (!cutscene_iniciada) {
             atualizarjogador(jogador, barreiras_casa, quant_barreiras_casa);
             camera->target = jogador->pos;
-            
-        } else {
-
-            jogador->frameAtual = 0;
-
-        }
+        } 
+        // Não precisa de 'else' aqui porque a gente já setou as variáveis no passo 2
         
         BeginDrawing();
-
             ClearBackground(BLACK);
-
             BeginMode2D(*camera);
-
                 DrawTexture(cenario_casa_florinda, 0, 0, WHITE);
-
                 desenharjogador(jogador);
-
                 desenhar_dona_florinda(&dona_florinda, *jogador);
-                
-                // desenhando a hitbox da dona florinda
-                // DrawRectangleLinesEx(hitbox_florinda, 2, RED);
-
-                // desenhando as barreiras da casa para debug, tirar depois
-                for (int i = 0; i < quant_barreiras_casa; i++) {
-
-                    DrawRectangleLinesEx(barreiras_casa[i], 2, RED);
-
-                }
-
-                desenhar_debug_mouse(*camera); // debug, tirar depois
-
+                // ... desenhar hitboxes ...
+                desenhar_debug_mouse(*camera);
             EndMode2D();
-
-            DrawText("CASA DA DONA FLORINDA", 10, 10, 20, BLACK); // testando
-
+            DrawText("CASA DA DONA FLORINDA", 10, 10, 20, BLACK);
         EndDrawing();
 
-        if (colisao_chaves_florinda) {
-
+        // 4. VERIFICA A TRAVA PARA RODAR A PRÓXIMA FASE
+        if (cutscene_iniciada) {
             Executar_fase_1();
-
-            // mudando o valor da variável que controla o while
             fase_acabou = true;
-
         }
     }
 

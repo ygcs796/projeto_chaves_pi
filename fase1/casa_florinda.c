@@ -78,7 +78,7 @@ int RodarCenaInicial(void) {
         "Pois trate de não perder mais nada!",
         "Tá bom... mas, se eu achar a minha chave no\ncaminho, eu posso perder só um pouquinho\na atenção?",
         "CHAVES!!!!!",
-        "Tá bom, tá bom! Cuido das estrelas primeiro…\ndepois da minha chave..."
+        "Tá bom, tá bom! Cuido das estrelas primeiro...\ndepois da minha chave..."
 
     };
     static const char *nomes[] = { "CHAVES", "DONA FLORINDA" };

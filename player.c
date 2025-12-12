@@ -8,6 +8,8 @@ void atualizarjogador(Player *p, Rectangle* barreiras, int quant_barreiras) {
     Vector2 movimento = { 0.0f, 0.0f };
     bool estaAndando = false;
 
+    if(p->interagindo == 0){ // para ele só se movimentar se não estiver interagindo
+
     // MOVIMENTAÇÃO SUAVE (CONTÍNUA)
     if (IsKeyDown(KEY_RIGHT)) {
         movimento.x += p->velocidade * GetFrameTime();
@@ -92,6 +94,7 @@ void atualizarjogador(Player *p, Rectangle* barreiras, int quant_barreiras) {
         p->pernaParaAndar = 0;
         p->moveTimer = 0.0f;
     }
+    } // fim do if(p->interagindo == 0)
 }
 
 
@@ -121,6 +124,8 @@ void setarjogador(Player *p, Vector2 pos) {
     p->hitbox.y = (pos.y + p->alturaFrame / 2.0f) - p->hitbox.height;
     
     p->isMoving = false; 
+
+    p->interagindo = 0;
 }
 
 

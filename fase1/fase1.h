@@ -1,10 +1,14 @@
 #ifndef FASE1_H
 #define FASE1_H
+
+// --- DEFINIÇÕES E CONSTANTES ---
 #define numero_de_ingredientes 7
 
 #include <stdio.h>
 #include <raylib.h>
 #include <stdbool.h>
+
+// --- ENUMS E STRUCTS ---
 
 typedef enum {
     Champion,
@@ -16,22 +20,26 @@ typedef enum {
     refri
 } Tipo_de_ingrediente;
 
-typedef struct{
+typedef struct {
     bool ingredientes[numero_de_ingredientes];
     int tempo_de_cozimento[2]; // intervalo int1 - int2
-}Pizza;
+} Pizza;
 
-typedef struct{
+typedef struct {
     int vidas;
     int dinheiro;
     Pizza pizza_atual;
     bool vitoria_parte_1;
-}Info_rodada;
+} Info_rodada;
 
+// --- PROTÓTIPOS DE FUNÇÕES ---
 
+// Funções de Gameplay
 void Executar_fase_1();
 void printar_vitoria();
 void printar_derrota();
 
+// Funções de Diálogo / Cutscenes (ADICIONADO AQUI)
+int RodarCenaInicial(void); 
 
 #endif
