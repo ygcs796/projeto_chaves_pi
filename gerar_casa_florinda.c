@@ -117,7 +117,8 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
                         { "Mergulho",       10, 10, 35 }
                     }
                 };
-                if(Executar_fase_1()) //executarBatalha(&vasco, &flamengo);
+                //Executar_fase_1(); 
+                executarBatalha(&vasco, &flamengo);
 
             // mudando o valor da variável que controla o while
             fase_acabou = true;

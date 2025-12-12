@@ -1,6 +1,7 @@
 #include "executar_batalha.h"
 
 void executarBatalha(Bixomon *player, Bixomon *oponente){
+    Music somBatalha = LoadMusicStream("musicas/musicabatalha.WAV");
 
     Texture2D fundoBatalha = LoadTexture("imagens/fundoBatalha.png");
 
@@ -19,8 +20,10 @@ void executarBatalha(Bixomon *player, Bixomon *oponente){
     bool acaoRealizadaOponente = false;
 
     bool botaoEmPressao = false;
+    PlayMusicStream(somBatalha);
 
     while(!WindowShouldClose() && (player->vida > 0 && oponente->vida > 0)){
+        UpdateMusicStream(somBatalha);
 
             Vector2 posicao_mouse = GetMousePosition();
             //----------------------------------------------------------------
@@ -75,6 +78,7 @@ void executarBatalha(Bixomon *player, Bixomon *oponente){
         PausarMs(5000);
     
         UnloadTexture(fundoBatalha);
+        UnloadMusicStream(somBatalha);
     }
 
 void printarFundoBatalha(Bixomon *player, Bixomon *oponente, Texture2D fundoBatalha){ // funcao para printar o fundo
