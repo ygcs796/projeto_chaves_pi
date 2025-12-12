@@ -14,7 +14,11 @@ static void desenhar_debug_mouse(Camera2D camera) {
              20, RED);
 }
 
-void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_selecionada* fase_selecionada, bool* selecionado) {
+void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_selecionada* fase_selecionada, bool* selecionado,
+                Music* musica_da_vila)
+{
+
+    UpdateMusicStream(*musica_da_vila);
 
     // criando a hitbox da porta da dona florinda
     Rectangle porta_dona_florinda = { 1820, 515, 115, 230}; // seta a colisao da porta da dona florinda
@@ -154,6 +158,8 @@ void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_sel
 
 Fase_selecionada executar_vila() {
 
+    Music musica_vila = LoadMusicStream("./musicas/Copper_on_the_beat.ogg");
+
     // CONFIGURAÇÕES INICIAIS
     Fase_selecionada fase_selecionada = erro; // coloca como erro para caso nada seja selecionado
     bool selecionado = false;
@@ -175,12 +181,17 @@ Fase_selecionada executar_vila() {
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 
+    PlayMusicStream(musica_vila);
+    SetMusicVolume(musica_vila, 0.5);
+
     while (/*!selecionado && */!WindowShouldClose()) { // flag e encerramento da janela
         
-        rodar_vila(&chaves, &camera, &mapa_vila, &fase_selecionada, &selecionado);
+        rodar_vila(&chaves, &camera, &mapa_vila, &fase_selecionada, &selecionado, &musica_vila);
         
         if ((fase_selecionada == porta_florinda)){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
             
+            StopMusicStream(musica_vila);
+
             carregar_casa_florinda(&chaves, &camera);
 
             // quando acabar a casa da dona florinda, eu vou mudar o valor dessa variável
@@ -193,6 +204,8 @@ Fase_selecionada executar_vila() {
 
         }
     }
+    UnloadMusicStream(musica_vila);
+
     descarregarjogador(&chaves);
 
     UnloadTexture(mapa_vila);
