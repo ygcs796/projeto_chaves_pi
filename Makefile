@@ -6,7 +6,7 @@ RAYLIB_DIR = deps/raylib
 INCLUDE_DIR = $(RAYLIB_DIR)/include
 LIB_DIR = $(RAYLIB_DIR)/lib
 
-# Diretório dos headers do jogo
+# Diretórios dos headers do jogo
 FASE1_INCLUDE = fase1
 FASE2_INCLUDE = fase2
 
@@ -18,7 +18,10 @@ CFLAGS = -std=c99 -Wall -I$(INCLUDE_DIR) -I$(FASE1_INCLUDE) -I$(FASE2_INCLUDE)
 LDFLAGS = -L$(LIB_DIR) -lraylib -lopengl32 -lgdi32 -lwinmm
 
 # Arquivos .c automaticamente
-SRC = $(wildcard *.c) $(wildcard fase1/*.c)
+SRC = $(wildcard *.c) \
+      $(wildcard fase1/*.c) \
+      $(wildcard fase2/*.c)
+
 OBJ = $(SRC:.c=.o)
 
 # Regra principal

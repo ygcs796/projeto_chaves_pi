@@ -80,7 +80,7 @@ void desenhar_conf_ingredientes(bool ingredientes_temp[], Texture2D img) {
 
 float desenhar_e_retornar_cronometro(float tempo_base_cronometro, float escala_x_FULL, float escala_y_FULL) {
     float tempo_atual = GetTime();
-    float tempo_disponivel = 10.0f;
+    float tempo_disponivel = 7.0f;
 
     char texto[16];
     float cronometro = (tempo_base_cronometro + tempo_disponivel) - tempo_atual;

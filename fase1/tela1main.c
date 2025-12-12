@@ -7,6 +7,11 @@
 
 Info_rodada executartela1(Info_rodada info_rodada) {
 
+    Music musicaTema = LoadMusicStream("musicas/fase1musicatema.mp3");
+    Sound botaoIngredientes = LoadSound("musicas/selecaoingredientes.ogg");
+    Sound botaoconfirmacao = LoadSound("musicas/confirmacaobotaofase1.ogg");
+    Sound botaerro = LoadSound("musicas/errosubmissao.ogg");
+
     float escala_x = (float)GetScreenWidth()  / LARGURA_BASE;
     float escala_y = (float)GetScreenHeight() / ALTURA_BASE;
 
@@ -65,38 +70,50 @@ Info_rodada executartela1(Info_rodada info_rodada) {
     Texture2D x_bebidas = LoadTexture("imagens/x_verde_fase1_ambiente1.png");
 
     Texture2D imagem_botao_selecao = LoadTexture("imagens/Botao colocar .png");
+    PlayMusicStream(musicaTema);
 
     while (!WindowShouldClose() && !encerou_rodada) {
+        UpdateMusicStream(musicaTema);
 
         Vector2 mouse = GetMousePosition();
         
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 
             // muda para os estados opostos
-            if (CheckCollisionPointCircle(mouse, botao_champion, raio_botoes_ingredientes))
+            if (CheckCollisionPointCircle(mouse, botao_champion, raio_botoes_ingredientes)){
+                PlaySound(botaoIngredientes);
                 ingredientes[Champion] = !ingredientes[Champion];
+            }
 
-            else if (CheckCollisionPointCircle(mouse, botao_presunto, raio_botoes_ingredientes))
-                ingredientes[Presunto] = !ingredientes[Presunto];
+            else if (CheckCollisionPointCircle(mouse, botao_presunto, raio_botoes_ingredientes)){
+                PlaySound(botaoIngredientes);
+                ingredientes[Presunto] = !ingredientes[Presunto];}
 
-            else if (CheckCollisionPointCircle(mouse, botao_calabresa, raio_botoes_ingredientes))
-                ingredientes[Calabresa] = !ingredientes[Calabresa];
+            else if (CheckCollisionPointCircle(mouse, botao_calabresa, raio_botoes_ingredientes)){
+                PlaySound(botaoIngredientes);
+                ingredientes[Calabresa] = !ingredientes[Calabresa];}
 
-            else if (CheckCollisionPointCircle(mouse, botao_frango, raio_botoes_ingredientes))
-                ingredientes[Frango] = !ingredientes[Frango];
+            else if (CheckCollisionPointCircle(mouse, botao_frango, raio_botoes_ingredientes)){
+                PlaySound(botaoIngredientes);
+                ingredientes[Frango] = !ingredientes[Frango];}
 
-            else if (CheckCollisionPointCircle(mouse, botao_cebola, raio_botoes_ingredientes))
-                ingredientes[Cebola] = !ingredientes[Cebola];
+            else if (CheckCollisionPointCircle(mouse, botao_cebola, raio_botoes_ingredientes)){
+                PlaySound(botaoIngredientes);
+                ingredientes[Cebola] = !ingredientes[Cebola];}
             
-            else if (CheckCollisionPointRec(mouse, botao_suco))
-                ingredientes[suco] = !ingredientes[suco];
+            else if (CheckCollisionPointRec(mouse, botao_suco)){
+                PlaySound(botaoIngredientes);
+                ingredientes[suco] = !ingredientes[suco];}
             
-            else if (CheckCollisionPointRec(mouse, botao_refri))
-                ingredientes[refri] = !ingredientes[refri];
+            else if (CheckCollisionPointRec(mouse, botao_refri)){
+                PlaySound(botaoIngredientes);
+                ingredientes[refri] = !ingredientes[refri];}
         }
 
         if((cronometro < 0.1f && !primeiro_loop) || (CheckCollisionPointRec(mouse, botao_de_selecao) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))){ //&& CheckCollisionPointRec(mouse, botao_de_selecao))) && !primeiro_loop){ // condicoes de encerramento
             ganhou = verificar_vitoria(ingredientes, ingredientes_temp);
+            if(ganhou) PlaySound(botaoconfirmacao);
+            else PlaySound(botaerro);
             encerou_rodada = true;
         }
         BeginDrawing();
@@ -139,6 +156,22 @@ Info_rodada executartela1(Info_rodada info_rodada) {
     info_rodada.vidas = vidas;
     info_rodada.pizza_atual = pizza_da_rodada;
     info_rodada.vitoria_parte_1 = ganhou;
+
+    // Fundo
+    UnloadTexture(fundo);
+
+    // Texturas das pizzas
+    for (int i = 0; i < 6; i++)
+        UnloadTexture(lista_imagens_pizza[i]);
+
+    // Outras texturas
+    UnloadTexture(correto_comanda);
+    UnloadTexture(x_bebidas);
+    UnloadTexture(imagem_botao_selecao);
+    UnloadMusicStream(musicaTema);
+
+    UnloadSound(botaoconfirmacao);
+    UnloadSound(botaoIngredientes);
 
     return info_rodada;
 }

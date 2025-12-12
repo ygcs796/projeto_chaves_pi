@@ -5,6 +5,7 @@
 #include "fase1/fase1.h"
 #include "fase1/tela_tutorial.h"
 #include "gerar_florinda.h"
+#include "fase2/executar_batalha.h"
 
 // a função abaixo indica as coordenadas do ponto em que o mouse está (aparece no canto superior esquerdo da tela, em vermelho)
 void desenhar_debug_mouse(Camera2D camera) { // debug, tirar depois

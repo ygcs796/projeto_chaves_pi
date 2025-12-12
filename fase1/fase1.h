@@ -34,8 +34,7 @@ typedef struct {
 
 // --- PROTÓTIPOS DE FUNÇÕES ---
 
-// Funções de Gameplay
-void Executar_fase_1();
+int Executar_fase_1();
 void printar_vitoria();
 void printar_derrota();
 

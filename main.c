@@ -6,6 +6,7 @@
 #include "vila.h"
 #include "fase1/fase1.h"
 #include "cena_inicial_contexto_jogo.h"
+#include "fase2/executar_batalha.h"
 
 typedef enum {
     MENU = 0,
@@ -17,8 +18,8 @@ typedef enum {
 int main(void) {
 
     // INICIALIZANDO A TELA
-    const int largura_tela = 1920;//1920; //GetMonitorWidth(0);  1366;
-    const int altura_tela = 1080;//1080; //GetMonitorHeight(0); 768;
+    const int largura_tela = GetMonitorWidth(0);//1920; //GetMonitorWidth(0);  1366;
+    const int altura_tela = GetMonitorHeight(0);//1080; //GetMonitorHeight(0); 768;
     InitWindow(largura_tela, altura_tela, "Chaves: em busca da chave perdida"); // abre a janela
     
     ToggleFullscreen();
