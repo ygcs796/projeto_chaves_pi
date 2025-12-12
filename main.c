@@ -14,7 +14,6 @@ typedef enum {
 
 int main(void) {
 
-
     // INICIALIZANDO A TELA
     const int largura_tela = 1920;//1920; //GetMonitorWidth(0);  1366;
     const int altura_tela = 1080;//1080; //GetMonitorHeight(0); 768;
@@ -47,34 +46,6 @@ int main(void) {
         default:
             break;
         }
-
-        // if (tela_atual == 0)
-        // {
-        //     /* code */
-            
-
-        // } else if (tela_atual == 1) {
-            
-            
-
-        // } 
-        // else if (tela_atual == 2) { // tela de gameplay
-
-        //     /*if (IsKeyPressed(KEY_ENTER))
-        //     {
-        //          code
-        //         tela_atual = 0;
-
-        //     }*/
-
-        //     printf("porta selecionada: %d", fase_selecionada);
-
-        //     if (fase_selecionada == porta_florinda){
-        //         Executar_fase_1();
-        //     }
-            
-
-        // }
 
     }
     CloseAudioDevice();
