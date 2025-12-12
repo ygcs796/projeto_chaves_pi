@@ -6,10 +6,85 @@
 #include "gerar_casa_florinda.h"
 #include "fase1/fase1.h"
 
+static void desenhar_debug_mouse(Camera2D camera) { 
+    Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), camera);
+    DrawText(TextFormat("X: %.0f Y: %.0f", mouseWorld.x, mouseWorld.y), 
+             GetScreenToWorld2D((Vector2){10, 10}, camera).x, 
+             GetScreenToWorld2D((Vector2){10, 50}, camera).y, 
+             20, RED);
+}
+
 void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_selecionada* fase_selecionada, bool* selecionado) {
 
     // criando a hitbox da porta da dona florinda
-    Rectangle porta_dona_florinda = {1820, 515, 115, 230}; // seta a colisao da porta da dona florinda
+    Rectangle porta_dona_florinda = { 1820, 515, 115, 230}; // seta a colisao da porta da dona florinda
+
+    Rectangle barreiras_vila[] = {  
+        // CORRIMÃO DA ESCADA DA VILA
+        {1370, 515, 5, 640},
+        // BARREIRA DA PORTA DA ESCADA
+        {1265, 475, 225, 25},
+        // VASO MAIS ALTO DA ESCADA
+        {1165, 500, 100, 75},
+        // VASO DO MEIO DA ESCADA
+        {1165, 825, 90, 90},
+        // PAREDE DA ESCADA
+        {1115, 500, 45, 645},
+        // BEIRA DA PIA DE ROUPA
+        {1505, 800, 5, 260},
+        // BARRIL DO CHAVES
+        {1385, 1045, 141, 195},
+        // PRIMEIRO VASO DA FRENTE DA CASA DA FLORINDA
+        {1585, 705, 90, 90},
+        // SEGUNDO VASO DA FRENTE DA CASA DA FLORINDA
+        {1680, 725, 90, 90},
+        // PAREDE DA FRENTE DA CASA DA FLORINDA
+        {1935, 740, 205, 5}, 
+        // PAREDE LATERAL DA CASA AMARELA
+        {2140, 745, 10, 150},
+        // PAREDE DA FRENTE DA CASA AMARELA
+        {2140, 890, 410, 5},
+        // CASA DE BAIXO 
+        {2039, 1176, 630, 450},
+        {2112, 1142, 482, 35},
+        {2176, 1106, 350, 40},
+        {2232, 1045, 233, 35},
+        {2328, 1017, 46, 15},
+        // VASO 1 DA CASA AZUL
+        {2595, 790, 115, 105},
+        // VASO 2 DA CASA AZUL
+        {3010, 795, 115, 105},
+        // RETÂNGULO QUE INCLUI A PAREDE E A PORTA DA CASA AZUL
+        {2710, 812, 300, 8},
+        // PISCINA
+        {2850, 1220, 280, 205},
+        // VASO DO LADO DA CAIXA DE BAIXO
+        {1905, 1215, 115, 105},
+        // PRIMEIRA METADE DA PAREDE DE BAIXO DA VILA
+        {409, 1460, 1641, 34},
+        // RETÂNGULO QUE INCLUI 3 VASOS E A PAREDE DE CIMA DO LADO DA ESCADA
+        {610, 1095, 550, 105},
+        {371, 792, 748, 357}, // PAREDE AMARELA (DOS VASOS)
+        // PAREDE LATERAL AMARELA
+        {370, 792, 40, 945},
+        // CASA 28
+        {3171, 76, 446, 747},
+        // ESCADA DA CASA 28
+        {3263, 832, 274, 92},
+        // PAREDE AMARELA INFERIOR (METADE QUE FALTAVA)
+        {2661, 1462, 1217, 275},
+        // MURO DA DIREITA
+        {3780, 92, 96, 1372},
+        // TRECHO DE LIMTIE SUPERIOR (ENTRE A CASA E O MURO DA DIREITA)
+        {3617, 55, 263, 40},
+        // CASA AZUL DO CANTO DIREITO
+        {3450, 1114, 331, 348},
+        {3509, 1060, 271, 50},
+        {3591, 1023, 189, 32},
+        {3696, 957, 85, 35}
+    };
+
+    const int quant_barreiras = sizeof(barreiras_vila) / sizeof(barreiras_vila[0]);
 
     camera->target = chaves->pos;
         
@@ -19,7 +94,7 @@ void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_sel
         // condição para que o Chaves pare de andar quando chegar na porta da dona florinda
         if (!dialogo_porta_florinda) {
 
-            atualizarjogador(chaves, NULL, 0);
+            atualizarjogador(chaves, barreiras_vila, quant_barreiras);
 
         } else { // para deixar o chaves no estático inclusive na arte dele
 
@@ -44,7 +119,8 @@ void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_sel
                 DrawTexture(*mapa_vila, 0, 0, WHITE);
 
                 desenharjogador(chaves);
-                DrawRectangleLinesEx(porta_dona_florinda, 1, RED);        // comando para verificar a hitbox
+                DrawRectangleLinesEx(porta_dona_florinda, 3, BLUE);        // comando para verificar a hitbox
+                desenhar_debug_mouse(*camera);
 
             EndMode2D();
             
@@ -103,7 +179,7 @@ Fase_selecionada executar_vila() {
         
         rodar_vila(&chaves, &camera, &mapa_vila, &fase_selecionada, &selecionado);
         
-        if (fase_selecionada == porta_florinda){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
+        if ((fase_selecionada == porta_florinda)){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
             
             carregar_casa_florinda(&chaves, &camera);
 

@@ -95,6 +95,11 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
     }
 
     UnloadTexture(cenario_casa_florinda);
+
+    jogador->interagindo = 0; // para destravar o movimento
+    jogador->frameAtual = 0; // reseta visualmente para parado
+    jogador->direcao = BAIXO; // para ele olhar para fora da casa quando sair dela
+
     descarregarjogador(jogador);
     descarregar_dona_florinda(&dona_florinda);
 
