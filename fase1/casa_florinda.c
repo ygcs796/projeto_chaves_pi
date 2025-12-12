@@ -1,4 +1,4 @@
-#include <raylib.h>
+#include "raylib.h"
 #include <string.h>
 
 int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,

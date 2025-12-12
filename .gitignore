@@ -1,6 +1,5 @@
 # Compilação C
 *.o
-*.a
 *.so
 *.dll
 *.dylib
@@ -8,11 +7,6 @@
 *.out
 *.obj
 *.lib
-
-# Binários do Raylib
-libraylib.a
-raylib.lib
-raylib.dll
 
 # Executáveis do projeto
 chaves

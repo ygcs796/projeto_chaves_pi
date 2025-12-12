@@ -3,7 +3,7 @@
 #define numero_de_ingredientes 7
 
 #include <stdio.h>
-#include <raylib.h>
+#include "raylib.h"
 #include <stdbool.h>
 
 typedef enum {
