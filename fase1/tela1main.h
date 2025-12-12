@@ -2,7 +2,7 @@
 #define TELA1_MAIN_H
 
 #include <stdio.h>
-#include <raylib.h>
+#include "raylib.h"
 #include <stdbool.h>
 #include <time.h>
 #include "fase1.h"

@@ -1,4 +1,4 @@
-#include <raylib.h>
+#include "raylib.h"
 #include "tela_quer_entrar.h"
 
 int RodarTelaPergunta(int largura, int altura){
