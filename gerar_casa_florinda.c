@@ -5,6 +5,7 @@
 #include "fase1/fase1.h"
 #include "fase1/tela_tutorial.h"
 #include "gerar_florinda.h"
+#include "fase2/executar_batalha.h"
 
 // a função abaixo indica as coordenadas do ponto em que o mouse está (aparece no canto superior esquerdo da tela, em vermelho)
 void desenhar_debug_mouse(Camera2D camera) { // debug, tirar depois
@@ -101,7 +102,22 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
 
         if (colisao_chaves_florinda) {
 
-            Executar_fase_1();
+                    Bixomon vasco = {"vasco", 120, 120, 15, 24, {
+                        { "Brasa",        25, 25, 15 },
+                        { "Explosão",     5, 5,  60 },
+                        { "Lança Chamas", 10, 10, 40 },
+                        { "Investida",    35, 35, 10 }
+                    }
+                };
+
+                    Bixomon flamengo = {"flamengo", 150, 150, 14, 20, {
+                        { "Jato d'Água",    20, 20, 20 },
+                        { "Onda Gigante",   5, 5,  55 },
+                        { "Bolha",          30, 30, 10 },
+                        { "Mergulho",       10, 10, 35 }
+                    }
+                };
+                if(Executar_fase_1()) //executarBatalha(&vasco, &flamengo);
 
             // mudando o valor da variável que controla o while
             fase_acabou = true;

@@ -9,7 +9,8 @@
 #include "casa_florinda.h"
 #include "tela_tutorial.h"
 
-void Executar_fase_1() {
+int Executar_fase_1() {
+
 
    while (!WindowShouldClose()) {
 
@@ -60,10 +61,10 @@ void Executar_fase_1() {
             info_rodada.vidas--;
     }
 
-    if(info_rodada.vidas == 0)
-        printar_derrota();
-    else
-        printar_vitoria();
+    if(info_rodada.vidas == 0){
+        printar_derrota(); return 0;}
+    else{
+        printar_vitoria(); return 1;};
 
     
 }
