@@ -16,6 +16,7 @@ SRC = \
     fase1/tela_tutorial.c \
     gerar_casa_florinda.c \
     gerar_florinda.c \
+    cena_inicial_contexto_jogo.c
 
 OBJ = $(SRC:.c=.o)
 

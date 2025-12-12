@@ -5,11 +5,13 @@
 #include "player.h"
 #include "vila.h"
 #include "fase1/fase1.h"
+#include "cena_inicial_contexto_jogo.h"
 
 typedef enum {
     MENU = 0,
     CREDITOS,
-    GAMEPLAY
+    GAMEPLAY,
+    INTRO_HISTORIA
 } GameState;
 
 int main(void) {
@@ -33,15 +35,33 @@ int main(void) {
         switch (tela_atual)
         {
         case MENU:
-            /* code */
-            tela_atual = rodarMenu(largura_tela, altura_tela);
+        
+            // próxima tela que o menu quer ir
+            GameState proxima_do_menu = (GameState)rodarMenu(largura_tela, altura_tela);
+            
+            // se o menu mandou ir pro jogo, nós desviamos para a intro primeiro
+            if (proxima_do_menu == GAMEPLAY) {
+                tela_atual = INTRO_HISTORIA;
+            } else {
+                tela_atual = proxima_do_menu;
+            }
             break;
+
         case CREDITOS:
-            /* code */
+            
             tela_atual = rodar_creditos(largura_tela, altura_tela);
             break;
+
+        case INTRO_HISTORIA:
+
+            RodarContextoJogo(); // roda até acabar (tem loop próprio)
+            
+            // rodando o loop do contexto do jogo, passamos para a tela gameplay
+            tela_atual = GAMEPLAY;
+            break;
+
         case GAMEPLAY:
-            /* code */
+        
             executar_vila(); // executa a  vila e retorna um enum Fase_selcionada do arquivo vila.h
             break;
         default:
