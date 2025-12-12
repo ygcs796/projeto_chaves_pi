@@ -12,14 +12,18 @@ void RodarContextoJogo() {
 
     // O TEXTO DA HISTÓRIA
     static const char *textoHistoria = 
-        "Mais um dia ensolarado desponta na Vila.\n"
+        "Mais um dia ensolarado desponta na Vila.\n\n"
         "A aparente tranquilidade, entretanto, não passa de um engano:\n"
-        "Há um rebuliço nas casas, um vai e vem furtivo, um cochicho perene, um espírito de sobressalto...\n"
-        "De todos os moradores, Chaves parece ser o único sereno...\n"
-        "Pior ainda, parece que há um esforço para que ele permaneça assim, alheio à correria que lhe rodeia...\n"
-        "Por que será? O que os moradores estão aprontando dessa vez que o Chaves não pode saber?\n"
-        "Bem, ele não pode saber e, por ora, você também não, caro jogador...\n"
-        "Mas deixa isso pra lá por enquanto! Aperta enter e vem curtir um dia com o Chaves na vila!";
+        "Há um rebuliço nas casas, um vai e vem furtivo, um cochicho incessante, um espírito de\nsobressalto...\n\n"
+        "Chaves também está inquieto. O motivo? Perdeu as chaves da sua casa!\n"
+        "Isso mesmo, camarada! Chaves tem uma casa! É a número 8 da vila.\n"
+        "Mas de que adianta ter casa, se ele não pode entrar?!?!?!?\n"
+        "E agora, quem poderá nos defender?!?!?!!?!?\n\n"
+        "Cabe a você, que já provou sua destreza ao conduzir Chavinho pelos mares de Acapulco,\n"
+        "socorrê-lo nesse momento tão delicado.\n\n"
+       "Atenção: faça TUDO o que lhe mandarem!\n"
+        "Só assim você provará mais uma vez sua lealdade ao eterno Chavo del Ocho.\n\n"
+       "Aperte enter e embarque na busca pela chave perdida!!!!!\n";
 
     static int letrasAtuais = 0;
     static int frameCounter = 0;
@@ -63,11 +67,11 @@ void RodarContextoJogo() {
             ClearBackground(BLACK);
 
             // 1. Desenhando o Título (Centralizado)
-            const char* titulo = "CHAVES: O JOGO";
+            const char* titulo = "CHAVES: EM BUSCA DA CHAVE PERDIDA";
             Vector2 tamanhoTexto = MeasureTextEx(fonteTitulo, titulo, 80, 5);
             int posTituloX = (GetScreenWidth() - tamanhoTexto.x) / 2;
             
-            DrawTextEx(fonteTitulo, titulo, (Vector2){posTituloX, 50}, 80, 5, YELLOW);
+            DrawTextEx(fonteTitulo, titulo, (Vector2){posTituloX, 50}, 77.5, 5, YELLOW);
 
             // 2. Desenhando o Texto da História
             Vector2 pos = {50, 180}; // Posição abaixo do título
@@ -78,9 +82,9 @@ void RodarContextoJogo() {
 
             // 3. Cursor Piscando
             if (estado == 0 && (piscadaCursor / 20) % 2 == 0) {
-                // Calcula onde desenhar o quadrado verde baseado no tamanho do texto atual
+                // Calcula onde desenhar o quadrado baseado no tamanho do texto atual
                 // (Simplificado: desenha no canto inferior direito para dar estilo retro)
-                DrawRectangle(GetScreenWidth() - 40, GetScreenHeight() - 40, 20, 20, GREEN);
+                DrawRectangle(GetScreenWidth() - 40, GetScreenHeight() - 5, 20, 20, YELLOW);
             }
 
             // 4. Aviso para começar
@@ -88,13 +92,13 @@ void RodarContextoJogo() {
                 if ((piscadaCursor / 30) % 2 == 0) { 
                     const char* msg = "Pressione ENTER para jogar";
                     int larguraMsg = MeasureText(msg, 20);
-                    DrawText(msg, (GetScreenWidth() - larguraMsg)/2, 550, 20, GREEN);
+                    DrawText(msg, (GetScreenWidth() - larguraMsg)/2, 750, 20, YELLOW);
                 }
             }
 
             // 5. Aviso de pular (discreto)
             if (estado == 0) {
-                DrawText("SPACE para pular", GetScreenWidth() - 150, GetScreenHeight() - 30, 10, DARKGRAY);
+                DrawText("SPACE para pular", GetScreenWidth() - 150, GetScreenHeight() - 5, 10, DARKGRAY);
             }
 
         EndDrawing();
