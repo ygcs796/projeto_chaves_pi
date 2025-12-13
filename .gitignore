@@ -1,6 +1,5 @@
 # Compilação C
 *.o
-*.a
 *.so
 *.dll
 *.dylib
@@ -9,14 +8,10 @@
 *.obj
 *.lib
 
-# Binários do Raylib
-libraylib.a
-raylib.lib
-raylib.dll
-
 # Executáveis do projeto
 chaves
 chaves.exe
+game
 
 # Build temporários
 build/
@@ -28,4 +23,7 @@ dist/
 
 # Windows lixo
 Thumbs.db
+
+# Pastas de config do windows
+.vscode/
 

@@ -5,52 +5,94 @@
 #include "player.h"
 #include "vila.h"
 #include "fase1/fase1.h"
+#include "cena_inicial_contexto_jogo.h"
+#include "fase2/executar_batalha.h"
+
+typedef enum {
+    MENU = 0,
+    CREDITOS,
+    GAMEPLAY,
+    INTRO_HISTORIA,
+    FIM_DE_JOGO
+} GameState;
 
 int main(void) {
 
-    const int largura_tela = 1920;//1920; //GetMonitorWidth(0);  1366;
-    const int altura_tela = 1080;//1080; //GetMonitorHeight(0); 768;
+    // INICIALIZANDO A TELA
+    const int largura_tela = 1920; //GetMonitorWidth(0);  1366;
+    const int altura_tela = 1080; //GetMonitorHeight(0); 768;
     InitWindow(largura_tela, altura_tela, "Chaves: em busca da chave perdida"); // abre a janela
     
     SetTargetFPS(60);
 
-    int tela_atual = 0;
+    GameState tela_atual = MENU;
+
+    Image imagem_final = LoadImage("./imagens/imagem_final.png");
+    Texture2D final = LoadTextureFromImage(imagem_final);
+    UnloadImage(imagem_final);
 
     InitAudioDevice();
 
     while (!WindowShouldClose())
     {
-        
-        if (tela_atual == 0)
+        switch (tela_atual)
         {
-            /* code */
-            tela_atual = rodarMenu(largura_tela, altura_tela);
+        case MENU:
+        
+            // próxima tela que o menu quer ir
+            GameState proxima_do_menu = (GameState)rodarMenu(largura_tela, altura_tela);
+            
+            // se o menu mandou ir pro jogo, nós desviamos para a intro primeiro
+            if (proxima_do_menu == GAMEPLAY) {
+                tela_atual = INTRO_HISTORIA;
+            } else {
+                tela_atual = proxima_do_menu;
+            }
+            break;
 
-        } else if (tela_atual == 1) {
+        case CREDITOS:
             
             tela_atual = rodar_creditos(largura_tela, altura_tela);
+            break;
 
-        } 
-        else if (tela_atual == 2) { // tela de gameplay
+        case INTRO_HISTORIA:
 
-            /*if (IsKeyPressed(KEY_ENTER))
-            {
-                 code
-                tela_atual = 0;
-
-            }*/
-
-            Fase_selecionada fase_selecionada = executar_vila(); // executa a  vila e retorna um enum Fase_selcionada do arquivo vila.h
-            printf("porta selecionada: %d", fase_selecionada);
-
-            if (fase_selecionada == porta_florinda){
-                Executar_fase_1();
-            }
+            RodarContextoJogo(); // roda até acabar (tem loop próprio)
             
+            // rodando o loop do contexto do jogo, passamos para a tela gameplay
+            tela_atual = GAMEPLAY;
+            break;
 
+        case GAMEPLAY:
+        
+            executar_vila();
+            tela_atual = FIM_DE_JOGO;
+            break;
+        case FIM_DE_JOGO:
+
+            if (IsKeyPressed(KEY_ENTER)) {
+
+                tela_atual = MENU;
+
+            }
+
+            if (!WindowShouldClose()) {
+
+                BeginDrawing();
+
+                    DrawTexture(final, 0, 0, WHITE);
+            
+                EndDrawing();
+
+            }    
+
+            break;
+        default:
+            break;
         }
 
     }
+    UnloadTexture(final);
     CloseAudioDevice();
     CloseWindow();
 

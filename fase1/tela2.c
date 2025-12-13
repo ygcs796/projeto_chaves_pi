@@ -8,6 +8,9 @@ bool executar_tela_2(Info_rodada info_rodada){
 
     Texture2D fundo = LoadTexture("imagens/fogao_fase1.png");
     Texture2D imagem_correto_comanda = LoadTexture("imagens/sinal_de_correto_comanda_fase1.png");
+    Music somFogao = LoadMusicStream("musicas/somfogao.mp3");
+    Sound botaoconfirmacao = LoadSound("musicas/confirmacaobotaofase1.ogg");
+    Sound botaerro = LoadSound("musicas/errosubmissao.ogg");
 
     Pizza pizza = info_rodada.pizza_atual;
 
@@ -35,7 +38,10 @@ bool executar_tela_2(Info_rodada info_rodada){
     Vector2 mouse = GetMousePosition();
     float nivel_queimado = 0.0f;
     
+    PlayMusicStream(somFogao);
+    
     while(!WindowShouldClose() && !botao_pressionado){
+        UpdateMusicStream(somFogao);
         nivel_queimado += 0.2361f;
 
         tempo_atual = GetTime();
@@ -43,12 +49,15 @@ bool executar_tela_2(Info_rodada info_rodada){
         mouse = GetMousePosition();
 
         if (CheckCollisionPointRec(mouse, botao_parar_cozimento) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-            if(tempo_cronometro >= pizza.tempo_de_cozimento[0] && tempo_cronometro <= pizza.tempo_de_cozimento[1])
-                return true; // apertou o botao no tempo certo
-            else
-                return false; // apertou o botao no tempo errado
-        else if (tempo_cronometro >= 18) // se o tempo do cronometro for 5 segs maior que o tempo maximo
-            return false; 
+            if(tempo_cronometro >= pizza.tempo_de_cozimento[0] && tempo_cronometro <= pizza.tempo_de_cozimento[1]){
+                PlaySound(botaoconfirmacao);
+                return true;} // apertou o botao no tempo certo
+            else{
+                PlaySound(botaerro);
+                return false;} // apertou o botao no tempo errado
+        else if (tempo_cronometro >= 18){ // se o tempo do cronometro for 5 segs maior que o tempo maximo
+            PlaySound(botaerro);
+            return false;}
             
 
         BeginDrawing();
@@ -68,6 +77,21 @@ bool executar_tela_2(Info_rodada info_rodada){
         EndDrawing();
     }
 
+    // Descarregar texturas principais
+    UnloadTexture(fundo);
+    UnloadTexture(imagem_correto_comanda);
+
+    // Descarregar todas as texturas da lista de pizzas
+    UnloadTexture(lista_imagens_pizza[0]);
+    UnloadTexture(lista_imagens_pizza[1]);
+    UnloadTexture(lista_imagens_pizza[2]);
+    UnloadTexture(lista_imagens_pizza[3]);
+    UnloadTexture(lista_imagens_pizza[4]);
+    UnloadTexture(lista_imagens_pizza[5]);
+
+    UnloadMusicStream(somFogao);
+    UnloadSound(botaerro);
+    UnloadSound(botaoconfirmacao);
     return false; // retorna falso em qualquer codicao adversa que possa ocorrer
 }
 

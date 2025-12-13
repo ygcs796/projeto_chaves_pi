@@ -1,4 +1,4 @@
-#include <raylib.h>
+#include "raylib.h"
 #include <string.h>
 
 int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,
@@ -36,7 +36,7 @@ int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,
         }
     }
 
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.8f));
+    // DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.8f));
 
     int yCaixa = GetScreenHeight() - imgCaixa.height;
     DrawTexture(imgCaixa, 0, yCaixa, WHITE);
@@ -47,7 +47,7 @@ int RodarDialogo(Texture2D imgA, Texture2D imgB, Texture2D imgCaixa, Font fonte,
     int yAvatar = yCaixa + (imgCaixa.height - avatarAtual.height) / 2;
     DrawTexture(avatarAtual, 20, yAvatar, WHITE);
 
-    Vector2 posicaoTexto = {250, yCaixa + 50};
+    Vector2 posicaoTexto = {500, yCaixa + 50};
     DrawTextEx(fonte, TextSubtext(falas[linhaAtual], 0, letrasAtuais),
                posicaoTexto, 20, 2, WHITE);
 
@@ -78,7 +78,7 @@ int RodarCenaInicial(void) {
         "Pois trate de não perder mais nada!",
         "Tá bom... mas, se eu achar a minha chave no\ncaminho, eu posso perder só um pouquinho\na atenção?",
         "CHAVES!!!!!",
-        "Tá bom, tá bom! Cuido das estrelas primeiro…\ndepois da minha chave..."
+        "Tá bom, tá bom! Cuido das estrelas primeiro...\ndepois da minha chave..."
 
     };
     static const char *nomes[] = { "CHAVES", "DONA FLORINDA" };
