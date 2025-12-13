@@ -3,5 +3,5 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "player.h"
-void carregar_casa_florinda(Player* jogador, Camera2D* camera);
+bool carregar_casa_florinda(Player* jogador, Camera2D* camera);
 #endif

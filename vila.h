@@ -8,7 +8,7 @@
 typedef enum {
     erro,
     porta_florinda,
-    porta_2,
+    porta_bruxa,
     porta_3
 } Fase_selecionada;
 

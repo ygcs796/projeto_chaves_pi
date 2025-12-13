@@ -16,7 +16,9 @@ void desenhar_debug_mouse(Camera2D camera) { // debug, tirar depois
              20, RED);
 }
 
-void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
+bool carregar_casa_florinda(Player* jogador, Camera2D* camera) {
+
+    bool ganhou_fase_1 = false; 
 
     bool fase_acabou = false;
 
@@ -90,7 +92,7 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
 
         // 4. VERIFICA A TRAVA PARA RODAR A PRÓXIMA FASE
         if (cutscene_iniciada) {
-            Executar_fase_1();
+            ganhou_fase_1 = Executar_fase_1();
             fase_acabou = true;
         }
     }
@@ -104,4 +106,5 @@ void carregar_casa_florinda(Player* jogador, Camera2D* camera) {
     descarregarjogador(jogador);
     descarregar_dona_florinda(&dona_florinda);
 
+    return ganhou_fase_1;
 }

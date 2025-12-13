@@ -5,6 +5,7 @@
 #include "player.h"
 #include "gerar_casa_florinda.h"
 #include "fase1/fase1.h"
+#include "gerar_casa_bruxa.h"
 
 static void desenhar_debug_mouse(Camera2D camera) { 
     Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), camera);
@@ -14,14 +15,47 @@ static void desenhar_debug_mouse(Camera2D camera) {
              20, RED);
 }
 
-void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_selecionada* fase_selecionada, bool* selecionado,
-                Music* musica_da_vila)
-{
+Fase_selecionada executar_vila() {
 
-    UpdateMusicStream(*musica_da_vila);
+    bool ganhou_fase_1 = false;
+    bool ganhou_fase_2 = false;
 
-    // criando a hitbox da porta da dona florinda
+    int dialogo_porta_florinda = 0;
+    int dialogo_porta_bruxa = 0;
+
+    Music musica_vila = LoadMusicStream("./musicas/Copper_on_the_beat.ogg");
+
+    // CONFIGURAÇÕES INICIAIS
+    Fase_selecionada fase_selecionada = erro; // coloca como erro para caso nada seja selecionado
+    bool selecionado = false;
+
+    Vector2 pos_chaves = {562, 1270};
+
+    Player chaves;
+    setarjogador(&chaves, pos_chaves);
+
+    // carregamento do mapa
+    Image imagem_vila = LoadImage("imagens/mapa_vila.png");
+    Texture2D mapa_vila = LoadTextureFromImage(imagem_vila);
+    UnloadImage(imagem_vila); // liberando a imagem da RAM
+
+    // carregamento da porta da bruxa do 71
+    Image imagem_porta_bruxa = LoadImage("imagens/portaBruxa.png");
+    Texture2D porta_bruxa_tex = LoadTextureFromImage(imagem_porta_bruxa);
+    UnloadImage(imagem_porta_bruxa);
+
+    // inicialização da câmera 2D
+    Camera2D camera = { 0 };
+    camera.offset = (Vector2){ 1920 / 2.0f, 1080 / 2.0f }; //TODO mudar o 1920 e o 1080 para variáveis de largura e altura da tela
+    camera.target = chaves.pos; // a câmera mira na posição do Chaves
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+
+    PlayMusicStream(musica_vila);
+    SetMusicVolume(musica_vila, 0.5);
+
     Rectangle porta_dona_florinda = { 1820, 515, 115, 230}; // seta a colisao da porta da dona florinda
+    Rectangle porta_bruxa_71 = {2045, 680, 95, 215};
 
     Rectangle barreiras_vila[] = {  
         // CORRIMÃO DA ESCADA DA VILA
@@ -88,28 +122,55 @@ void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_sel
         {3696, 957, 85, 35}
     };
 
-    const int quant_barreiras = sizeof(barreiras_vila) / sizeof(barreiras_vila[0]);
+    while (/*!selecionado && */!WindowShouldClose()) { // flag e encerramento da janela
+        
+        UpdateMusicStream(musica_vila);
 
-    camera->target = chaves->pos;
+        // criando a hitbox da porta da dona florinda
+
+        const int quant_barreiras = sizeof(barreiras_vila) / sizeof(barreiras_vila[0]);
+
+        camera.target = chaves.pos;
         
         // verificar se o chaves colidiu com a porta da dona florinda
-        int dialogo_porta_florinda = CheckCollisionRecs(porta_dona_florinda, chaves->hitbox);
+
+        if (!ganhou_fase_1) {
+
+            dialogo_porta_florinda = CheckCollisionRecs(porta_dona_florinda, chaves.hitbox);
+
+        } else {
+
+            dialogo_porta_bruxa = CheckCollisionRecs(chaves.hitbox, porta_bruxa_71);
+
+        }
 
         // condição para que o Chaves pare de andar quando chegar na porta da dona florinda
-        if (!dialogo_porta_florinda) {
+        if (!dialogo_porta_florinda && !dialogo_porta_bruxa) {
 
-            atualizarjogador(chaves, barreiras_vila, quant_barreiras);
+            atualizarjogador(&chaves, barreiras_vila, quant_barreiras);
 
         } else { // para deixar o chaves no estático inclusive na arte dele
 
-            chaves->frameAtual = 0;
+            chaves.frameAtual = 0;
 
-            if (IsKeyDown(KEY_ENTER)) { // avançando para a próxima fase
-    
-                *fase_selecionada = porta_florinda;
-                *selecionado = true;
+            if (dialogo_porta_florinda) {
+
+                if (IsKeyDown(KEY_ENTER)) { // avançando para a próxima fase
         
-            } 
+                    fase_selecionada = porta_florinda;
+                    selecionado = true;
+            
+                } 
+            } else if (dialogo_porta_bruxa) {
+
+                if (IsKeyDown(KEY_ENTER)) { // avançando para a próxima fase
+        
+                    fase_selecionada = porta_bruxa;
+                    selecionado = true;
+            
+                } 
+
+            }
 
         }
         
@@ -117,14 +178,19 @@ void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_sel
 
             ClearBackground(BLACK);
 
-            BeginMode2D(*camera);
+            BeginMode2D(camera);
 
                 // desenhando o mapa
-                DrawTexture(*mapa_vila, 0, 0, WHITE);
+                DrawTexture(mapa_vila, 0, 0, WHITE);
 
-                desenharjogador(chaves);
-                DrawRectangleLinesEx(porta_dona_florinda, 3, BLUE);        // comando para verificar a hitbox
-                desenhar_debug_mouse(*camera);
+                desenharjogador(&chaves);
+                desenhar_debug_mouse(camera);
+
+                if (ganhou_fase_1) {
+
+                    DrawTexture(porta_bruxa_tex, 2030, 670, WHITE);
+
+                }
 
             EndMode2D();
             
@@ -148,59 +214,53 @@ void rodar_vila(Player* chaves, Camera2D* camera, Texture2D* mapa_vila, Fase_sel
                 DrawText(texto_dialogo2, centro_x - (largura_texto_2 / 2), centro_y + 220, 30, WHITE);
 
 
+            } else if (dialogo_porta_bruxa) {
+
+                const char *texto_dialogo1 = "QUER ENTRAR NA CASA DA DONA CLOTILDE?\n";
+                const char *texto_dialogo2 = "ENTER para SIM";
+                int largura_texto = MeasureText(texto_dialogo1, 30);
+                int largura_texto_2 = MeasureText(texto_dialogo2, 30);
+                
+                // Coordenadas de centro da tela
+                int centro_x = 1920 / 2;
+                int centro_y = 1080 / 2;
+
+                // Desenha o fundo da caixa de diálogo (um retângulo)
+                DrawRectangle(centro_x - (largura_texto / 2) - 20, centro_y + 150, 750, 120, Fade(BLACK, 0.8f));
+                
+                // Desenha o texto (usando o MeasureText para centralizar o texto no retângulo)
+                DrawText(texto_dialogo1, centro_x - largura_texto/2, centro_y + 175, 30, WHITE);
+                DrawText(texto_dialogo2, centro_x - (largura_texto_2 / 2), centro_y + 220, 30, WHITE);
+                
             }
+
+
 
             DrawText("VILA CENTRAL", 10, 10, 20, BLACK);
 
         EndDrawing();
-
-}
-
-Fase_selecionada executar_vila() {
-
-    Music musica_vila = LoadMusicStream("./musicas/Copper_on_the_beat.ogg");
-
-    // CONFIGURAÇÕES INICIAIS
-    Fase_selecionada fase_selecionada = erro; // coloca como erro para caso nada seja selecionado
-    bool selecionado = false;
-
-    Vector2 pos_chaves = {562, 1270};
-
-    Player chaves;
-    setarjogador(&chaves, pos_chaves);
-
-    // carregamento do mapa
-    Image imagem_vila = LoadImage("imagens/mapa_vila.png");
-    Texture2D mapa_vila = LoadTextureFromImage(imagem_vila);
-    UnloadImage(imagem_vila); // liberando a imagem da RAM
-    
-    // inicialização da câmera 2D
-    Camera2D camera = { 0 };
-    camera.offset = (Vector2){ 1920 / 2.0f, 1080 / 2.0f }; //TODO mudar o 1920 e o 1080 para variáveis de largura e altura da tela
-    camera.target = chaves.pos; // a câmera mira na posição do Chaves
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
-
-    PlayMusicStream(musica_vila);
-    SetMusicVolume(musica_vila, 0.5);
-
-    while (/*!selecionado && */!WindowShouldClose()) { // flag e encerramento da janela
         
-        rodar_vila(&chaves, &camera, &mapa_vila, &fase_selecionada, &selecionado, &musica_vila);
-        
+        // 
         if ((fase_selecionada == porta_florinda)){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
             
             StopMusicStream(musica_vila);
 
-            carregar_casa_florinda(&chaves, &camera);
+            ganhou_fase_1 = carregar_casa_florinda(&chaves, &camera);
 
             // quando acabar a casa da dona florinda, eu vou mudar o valor dessa variável
             fase_selecionada = erro;
 
-            selecionado = false;
+            // selecionado = false;
     
             chaves.pos = (Vector2){1820, 800};
 
+            dialogo_porta_florinda = 0;
+
+        } else if (ganhou_fase_1 && fase_selecionada == porta_bruxa) {
+
+            StopMusicStream(musica_vila);
+
+            ganhou_fase_2 = gerar_casa_bruxa(&chaves, &camera);
 
         }
     }
@@ -209,6 +269,7 @@ Fase_selecionada executar_vila() {
     descarregarjogador(&chaves);
 
     UnloadTexture(mapa_vila);
+    UnloadTexture(porta_bruxa_tex);
 
     return fase_selecionada;
 }
