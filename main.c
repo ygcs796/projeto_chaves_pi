@@ -12,7 +12,8 @@ typedef enum {
     MENU = 0,
     CREDITOS,
     GAMEPLAY,
-    INTRO_HISTORIA
+    INTRO_HISTORIA,
+    FIM_DE_JOGO
 } GameState;
 
 int main(void) {
@@ -22,11 +23,13 @@ int main(void) {
     const int altura_tela = 1080; //GetMonitorHeight(0); 768;
     InitWindow(largura_tela, altura_tela, "Chaves: em busca da chave perdida"); // abre a janela
     
-    ToggleFullscreen();
-
     SetTargetFPS(60);
 
     GameState tela_atual = MENU;
+
+    Image imagem_final = LoadImage("./imagens/imagem_final.png");
+    Texture2D final = LoadTextureFromImage(imagem_final);
+    UnloadImage(imagem_final);
 
     InitAudioDevice();
 
@@ -62,13 +65,34 @@ int main(void) {
 
         case GAMEPLAY:
         
-            executar_vila(); // executa a  vila e retorna um enum Fase_selcionada do arquivo vila.h
+            executar_vila();
+            tela_atual = FIM_DE_JOGO;
+            break;
+        case FIM_DE_JOGO:
+
+            if (IsKeyPressed(KEY_ENTER)) {
+
+                tela_atual = MENU;
+
+            }
+
+            if (!WindowShouldClose()) {
+
+                BeginDrawing();
+
+                    DrawTexture(final, 0, 0, WHITE);
+            
+                EndDrawing();
+
+            }    
+
             break;
         default:
             break;
         }
 
     }
+    UnloadTexture(final);
     CloseAudioDevice();
     CloseWindow();
 

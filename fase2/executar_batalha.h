@@ -43,7 +43,7 @@ typedef struct{
     TipoItem tipoItem;
 }Item;
 
-void executarBatalha(Bixomon *player, Bixomon *oponente);
+int executarBatalha(Bixomon *player, Bixomon *oponente, Item itens[], int numFundoBatalha);
 int receber_ataque(Bixomon **player, Bixomon **oponente, Rectangle botoesAtaques[], Vector2 posicaoMouse, bool *botaoEmPressao, Texture2D fundoBatalha);
 void PausarMs(int ms);
 int menu_batalha(Bixomon *player, Bixomon *oponente, Vector2 posicao_mouse, Rectangle botao_ataque, bool *botaoEmPressao, Rectangle botao_mochila, Texture2D fundoBatalha);

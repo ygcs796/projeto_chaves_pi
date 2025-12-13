@@ -6,21 +6,21 @@
 void setar_bruxa_71(NPC* bruxa) {
 
     bruxa->position = (Vector2){834, 430};
-    
-    // alinhando a hitbox para ficar bem nos pés da dona florinda
-    bruxa->hitbox.x = 5;
-    bruxa->hitbox.y = 40;
-    bruxa->hitbox.width = bruxa->larguraFrame;
-    bruxa->hitbox.height = bruxa->alturaFrame;
 
+    // medidas de 1 sprite da dona florinda
+    bruxa->larguraFrame = 234;
+    bruxa->alturaFrame = 200;
+    
     // carregando os sprites
     bruxa->SpriteImage = LoadImage("imagens/DonaClotiude.png");
     bruxa->TexSprite = LoadTextureFromImage(bruxa->SpriteImage);
     UnloadImage(bruxa->SpriteImage);
     
-    // medidas de 1 sprite da dona florinda
-    bruxa->larguraFrame = 234;
-    bruxa->alturaFrame = 200;
+    // alinhando a hitbox para ficar bem nos pés da dona florinda
+    bruxa->hitbox.x = bruxa->position.x - (bruxa->larguraFrame / 2);
+    bruxa->hitbox.y = bruxa->position.y - (bruxa->alturaFrame / 2);
+    bruxa->hitbox.width = bruxa->larguraFrame;
+    bruxa->hitbox.height = bruxa->alturaFrame;
 
 }
 

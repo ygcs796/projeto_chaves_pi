@@ -1,16 +1,32 @@
 #include "executar_batalha.h"
 
-void executarBatalha(Bixomon *player, Bixomon *oponente){
+int executarBatalha(Bixomon *player, Bixomon *oponente, Item itens[], int numFundoBatalha){
     Music somBatalha = LoadMusicStream("musicas/musicabatalha.WAV");
 
-    Texture2D fundoBatalha = LoadTexture("imagens/fundoBatalha.png");
+    int retorno_vitoria;
 
-    Rectangle botao_ataque = {1000, 300, 50, 50};
-    Rectangle botao_mochila = {700, 300, 50, 50};
+    Texture2D fundoBatalha;
 
-    Rectangle botoesDeAtaquePlayer[] = {{1000, 200, 50, 50}, {1000, 300, 50, 50}, {1000, 400, 50, 50}, {1000, 500, 50, 50}};
+    if (numFundoBatalha == 1) {
+        fundoBatalha = LoadTexture("imagens/barriga_MENU.png");
+    }
+    else if (numFundoBatalha == 2) {
+        fundoBatalha = LoadTexture("imagens/GIRAFALES_MENU.png");
+    }
+    else if (numFundoBatalha == 3) {
+        fundoBatalha = LoadTexture("imagens/KIKO_MENU.png");
+    }
+    else {
+        fundoBatalha = LoadTexture("imagens/NHONHO_MENU.png");
+    }
 
-    Item itens[] = { {"Pocao de Vida", 3, 15, Cura}, {"Pocao de pp", 2, 5, PP}};
+    
+
+    Rectangle botao_ataque = {1199, 777, 100, 50}; 
+    Rectangle botao_mochila = {1199, 908, 100, 50};
+
+    Rectangle botoesDeAtaquePlayer[] = {{94, 773, 50, 50}, {94, 907, 50, 50}, {509, 773, 50, 50}, {509, 907, 50, 50}};
+
     int numItens = 2; // tamanho do vetor de intens
 
     Tela tela = Menu;
@@ -72,10 +88,9 @@ void executarBatalha(Bixomon *player, Bixomon *oponente){
 
         BeginDrawing();
             ClearBackground(BLACK);
-            if(player->vida > 0) DrawText("Vitoria!", 700, 350, 100, GREEN);
-            else DrawText("Derrota", 700 ,350, 100, RED);
+            if(player->vida > 0) return 1;  // se venceu
+            else  return 0;// se perdeu 
         EndDrawing();
-        PausarMs(5000);
     
         UnloadTexture(fundoBatalha);
         UnloadMusicStream(somBatalha);
@@ -87,12 +102,10 @@ void printarFundoBatalha(Bixomon *player, Bixomon *oponente, Texture2D fundoBata
 
     DrawTexture(fundoBatalha, 0, 0, WHITE);
     sprintf(transferencia, "%d/%d", player->vida, player->vida_MAX);
-    DrawText(transferencia, 1100, 460, 40, BLACK);
-    DrawText(player->nome, 803, 360, 50, BLACK);
+    DrawText(transferencia, 1128, 617, 40, BLACK);
 
     sprintf(transferencia, "%d/%d", oponente->vida, oponente->vida_MAX); 
-    DrawText(transferencia, 414, 95, 40, BLACK);
-    DrawText(oponente->nome, 114, 90, 50, BLACK);
+    DrawText(transferencia, 113, 199, 40, BLACK);
 }
 
 int menu_batalha(Bixomon *player, Bixomon *oponente, Vector2 posicao_mouse, Rectangle botao_ataque, bool *botaoEmPressao, Rectangle botao_mochila, Texture2D fundoBatalha){
@@ -164,9 +177,11 @@ int executar_mochila(Bixomon **player, Item itens[], int numItens, Vector2 posic
 
     int acao = Mochila;
 
+    Texture2D texturamochila = LoadTexture("imagens/BAG (1).png");
+
     char tranferencia[50]; //somente para passar o valores de cada
 
-    Rectangle botaoMenu = {1000, 600, 50, 50};
+    Rectangle botaoMenu = {1491, 937, 380, 100};
     Rectangle botaoItens;
 
     
@@ -174,12 +189,12 @@ int executar_mochila(Bixomon **player, Item itens[], int numItens, Vector2 posic
     BeginDrawing();
 
         ClearBackground(WHITE);
+        DrawTexture(texturamochila, 0, 0,WHITE);
         DrawRectangleRec(botaoMenu, BLUE);
         for(int i = 0; i < numItens; i++){
-            botaoItens = (Rectangle){200, 100 + (i*50), 400, 30};
-            DrawRectangleRec(botaoItens, RED);
+            botaoItens = (Rectangle){800, 100 + (i*50), 400, 30};
             sprintf(tranferencia, "%s(%d)", itens[i].nome, itens[i].qtd);
-            DrawText(tranferencia, 200, 100 + (i*50), 30, BLACK);
+            DrawText(tranferencia, 800, 100 + (i*50), 30, BLACK);
             if(CheckCollisionPointRec(posicaoMouse, botaoItens) && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
                 acao = Menu;
                 if(itens[i].tipoItem == Cura){
@@ -202,6 +217,7 @@ int executar_mochila(Bixomon **player, Item itens[], int numItens, Vector2 posic
 
     if(CheckCollisionPointRec(posicaoMouse, botaoMenu) && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) acao = NaoAcao;
 
+    UnloadTexture(texturamochila);
     return acao;
 
 }

@@ -44,6 +44,18 @@ Fase_selecionada executar_vila() {
     Texture2D porta_bruxa_tex = LoadTextureFromImage(imagem_porta_bruxa);
     UnloadImage(imagem_porta_bruxa);
 
+    // carregando a seta pra direita
+    Image seta_direita = LoadImage("imagens/seta_direita.png");
+    ImageResize(&seta_direita, 77, 60);
+    Texture2D seta_direita_tex = LoadTextureFromImage(seta_direita);
+    UnloadImage(seta_direita);
+
+    // carregando a seta pra cima
+    Image seta_cima = LoadImage("imagens/seta_cima.png");
+    ImageResize(&seta_cima, 60, 77);
+    Texture2D seta_cima_tex = LoadTextureFromImage(seta_cima);
+    UnloadImage(seta_cima);
+
     // inicialização da câmera 2D
     Camera2D camera = { 0 };
     camera.offset = (Vector2){ 1920 / 2.0f, 1080 / 2.0f }; //TODO mudar o 1920 e o 1080 para variáveis de largura e altura da tela
@@ -183,14 +195,19 @@ Fase_selecionada executar_vila() {
                 // desenhando o mapa
                 DrawTexture(mapa_vila, 0, 0, WHITE);
 
+                if (!ganhou_fase_1) {
+
+                    DrawTexture(seta_cima_tex, 1850, 774, WHITE);
+
+                } else if (!ganhou_fase_2) {
+
+                    DrawTexture(seta_direita_tex, 1941, 774, WHITE);
+                    DrawTexture(porta_bruxa_tex, 2030, 670, WHITE);
+                    
+                } 
                 desenharjogador(&chaves);
                 desenhar_debug_mouse(camera);
 
-                if (ganhou_fase_1) {
-
-                    DrawTexture(porta_bruxa_tex, 2030, 670, WHITE);
-
-                }
 
             EndMode2D();
             
@@ -243,8 +260,6 @@ Fase_selecionada executar_vila() {
         // 
         if ((fase_selecionada == porta_florinda)){ // caso o jogador tenha selecionado entrar na casa da dona florinda...
             
-            StopMusicStream(musica_vila);
-
             ganhou_fase_1 = carregar_casa_florinda(&chaves, &camera);
 
             // quando acabar a casa da dona florinda, eu vou mudar o valor dessa variável
@@ -262,7 +277,9 @@ Fase_selecionada executar_vila() {
 
             ganhou_fase_2 = gerar_casa_bruxa(&chaves, &camera);
 
-        }
+            fase_selecionada = erro;
+
+        } else if (ganhou_fase_2) break;
     }
     UnloadMusicStream(musica_vila);
 
@@ -270,6 +287,8 @@ Fase_selecionada executar_vila() {
 
     UnloadTexture(mapa_vila);
     UnloadTexture(porta_bruxa_tex);
+    UnloadTexture(seta_direita_tex);
+    UnloadTexture(seta_cima_tex);
 
     return fase_selecionada;
 }
